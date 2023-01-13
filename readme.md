@@ -11,3 +11,13 @@ General rules
 - Addition of User guide in asciidoc is needed so that developers know what to do and how features can be used.
 
 See also https://microstream.atlassian.net/wiki/spaces/MSG/pages/2113568769/Initial+donation and https://microstream.atlassian.net/wiki/spaces/MSG/pages/2118975491/Code+drop+and+changes
+
+
+
+## Good to know
+
+Run only the integration tests
+
+```
+mvn clean verify -rf :integration
+```

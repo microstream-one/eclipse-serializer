@@ -46,6 +46,7 @@
 		<module>afs</module>
 		<module>base</module>
 		<module>persistence</module>
+        <module>tests</module>
 	</modules>
 	
 	<dependencyManagement>
