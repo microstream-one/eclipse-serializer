@@ -22,6 +22,8 @@ package one.microstream.tests.integration;
 
 import one.microstream.persistence.binary.util.Serializer;
 import one.microstream.persistence.binary.util.SerializerFoundation;
+import one.microstream.tests.integration.data.TestSerializationData;
+import one.microstream.tests.integration.data.TestSerializationDataProvider;
 import one.microstream.tests.integration.util.PrettyPrint;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,30 +50,39 @@ public class TestSerialization {
 
             URL url = getClass().getClassLoader().getResource(serializationData.getFileName());
             Assertions.assertThat(url).as(String.format("Cannot find file %s within classpath", serializationData.getFileName())).isNotNull();
-            List<String> result = Files.readAllLines(Paths.get(url.toURI()));
 
-            String encodedBytes = Base64.getEncoder().encodeToString(bytes);
+            if (!"IdentityHashMap.test.txt".equals(serializationData.getFileName())) {
+                // The binary output is not unique for a IdentityHashMap with the same entries
+                // So we only tst restored instance equality later on in the method
 
-            String encodedExpected = result.get(0);
+                List<String> result = Files.readAllLines(Paths.get(url.toURI()));
 
-            if (!encodedBytes.equals(encodedExpected)) {
-                System.out.printf("Difference in binary output for type: %s%n", serializationData.getInstance().getClass().getName());
-                System.out.println("Expected");
-                result.stream().skip(2).forEach(System.out::println);
-                System.out.println("Found");
-                System.out.println(PrettyPrint.bytesToHex(bytes));
+                String encodedBytes = Base64.getEncoder().encodeToString(bytes);
+
+                String encodedExpected = result.get(0);
+
+                if (!encodedBytes.equals(encodedExpected)) {
+                    System.out.printf("Difference in binary output for type: %s%n", serializationData.getInstance().getClass().getName());
+                    System.out.println("Expected");
+                    result.stream().skip(2).forEach(System.out::println);
+                    System.out.println("Found");
+                    System.out.println(PrettyPrint.bytesToHex(bytes));
+                }
+                Assertions.assertThat(encodedBytes).isEqualTo(encodedExpected);
             }
-            Assertions.assertThat(encodedBytes).isEqualTo(encodedExpected);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         try (Serializer<byte[]> serializer = Serializer.Bytes(foundation)) {
             Object reconstructed = serializer.deserialize(bytes);
-            Assertions.assertThat(reconstructed).isEqualTo(serializationData.getInstance());
+            // Makes use of the equals to compare instances.
+            // For Arrays, make use of Arrays.equals (arrays of primitives) or Arrays.deepEquals
+            serializationData.getCompareInstances().doCheckEquality(reconstructed, serializationData.getInstance());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
 
     }
 }

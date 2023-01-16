@@ -1,4 +1,4 @@
-package one.microstream.tests.integration;
+package one.microstream.tests.integration.data;
 
 /*-
  * #%L
@@ -20,14 +20,19 @@ package one.microstream.tests.integration;
  * #L%
  */
 
+import java.util.StringJoiner;
+
 public class TestSerializationData {
 
     private final Object instance;
     private final String fileName;
 
-    public TestSerializationData(Object instance, String fileName) {
+    private final CompareInstances compareInstances;
+
+    public TestSerializationData(Object instance, String fileName, CompareInstances compareInstances) {
         this.instance = instance;
         this.fileName = fileName;
+        this.compareInstances = compareInstances;
     }
 
     public Object getInstance() {
@@ -36,5 +41,16 @@ public class TestSerializationData {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public CompareInstances getCompareInstances() {
+        return compareInstances;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner("Testing ")
+                .add("fileName='" + fileName + "'")
+                .toString();
     }
 }

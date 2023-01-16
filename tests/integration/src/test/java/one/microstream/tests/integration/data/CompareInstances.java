@@ -1,4 +1,4 @@
-package one.microstream.tests.integration;
+package one.microstream.tests.integration.data;
 
 /*-
  * #%L
@@ -20,18 +20,7 @@ package one.microstream.tests.integration;
  * #L%
  */
 
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
-
-import java.util.stream.Stream;
-
-public class TestSerializationDataProvider implements ArgumentsProvider {
-    @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
-        return Stream.of(
-                Arguments.of(new TestSerializationData(123, "Integer.test.txt"))
-        );
-    }
-
+@FunctionalInterface
+public interface CompareInstances {
+    void doCheckEquality(Object instance1, Object instance2);
 }
