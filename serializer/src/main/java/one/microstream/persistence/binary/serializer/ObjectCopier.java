@@ -1,4 +1,4 @@
-package one.microstream.persistence.binary.util;
+package one.microstream.persistence.binary.serializer;
 
 /*-
  * #%L
@@ -20,14 +20,14 @@ package one.microstream.persistence.binary.util;
  * #L%
  */
 
-import static one.microstream.X.notNull;
-
-import java.io.Closeable;
-
 import one.microstream.X;
 import one.microstream.persistence.binary.types.Binary;
 import one.microstream.persistence.types.PersistenceManager;
 import one.microstream.reference.Reference;
+
+import java.io.Closeable;
+
+import static one.microstream.X.notNull;
 
 public interface ObjectCopier extends Closeable
 {

@@ -20,8 +20,8 @@ package one.microstream.tests.integration;
  * #L%
  */
 
-import one.microstream.persistence.binary.util.Serializer;
-import one.microstream.persistence.binary.util.SerializerFoundation;
+import one.microstream.persistence.binary.serializer.Serializer;
+import one.microstream.persistence.binary.serializer.SerializerFoundation;
 import one.microstream.tests.integration.data.TestSerializationData;
 import one.microstream.tests.integration.data.TestSerializationDataProvider;
 import one.microstream.tests.integration.util.PrettyPrint;

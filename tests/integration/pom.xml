@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>one.microstream</groupId>
-            <artifactId>microstream-persistence-binary</artifactId>
+            <artifactId>microstream-serializer</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

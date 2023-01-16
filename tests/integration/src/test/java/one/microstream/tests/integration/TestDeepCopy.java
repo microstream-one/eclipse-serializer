@@ -20,7 +20,7 @@ package one.microstream.tests.integration;
  * #L%
  */
 
-import one.microstream.persistence.binary.util.ObjectCopier;
+import one.microstream.persistence.binary.serializer.ObjectCopier;
 import one.microstream.tests.integration.data.TestSerializationData;
 import one.microstream.tests.integration.data.TestSerializationDataProvider;
 import org.junit.jupiter.params.ParameterizedTest;

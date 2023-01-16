@@ -1,4 +1,4 @@
-package one.microstream.persistence.binary.util;
+package one.microstream.persistence.binary.serializer;
 
 /*-
  * #%L
@@ -20,37 +20,23 @@ package one.microstream.persistence.binary.util;
  * #L%
  */
 
-import static one.microstream.X.notNull;
-
-import java.nio.ByteBuffer;
-import java.util.function.Function;
-
 import one.microstream.X;
 import one.microstream.collections.HashTable;
 import one.microstream.collections.types.XGettingCollection;
 import one.microstream.hashing.XHashing;
 import one.microstream.memory.XMemory;
-import one.microstream.persistence.binary.types.Binary;
-import one.microstream.persistence.binary.types.BinaryStorer;
-import one.microstream.persistence.binary.types.ChunksBuffer;
-import one.microstream.persistence.binary.types.ChunksBufferByteReversing;
-import one.microstream.persistence.binary.types.ChunksWrapper;
+import one.microstream.persistence.binary.types.*;
 import one.microstream.persistence.exceptions.PersistenceExceptionTransfer;
-import one.microstream.persistence.types.PersistenceIdSet;
-import one.microstream.persistence.types.PersistenceManager;
-import one.microstream.persistence.types.PersistenceObjectIdRequestor;
-import one.microstream.persistence.types.PersistenceObjectManager;
-import one.microstream.persistence.types.PersistenceSource;
-import one.microstream.persistence.types.PersistenceStoreHandler;
-import one.microstream.persistence.types.PersistenceStorer;
-import one.microstream.persistence.types.PersistenceTarget;
-import one.microstream.persistence.types.PersistenceTypeHandler;
-import one.microstream.persistence.types.PersistenceTypeHandlerManager;
-import one.microstream.persistence.types.Storer;
+import one.microstream.persistence.types.*;
 import one.microstream.reference.Lazy;
 import one.microstream.reference.ObjectSwizzling;
 import one.microstream.reference.Swizzling;
 import one.microstream.util.BufferSizeProviderIncremental;
+
+import java.nio.ByteBuffer;
+import java.util.function.Function;
+
+import static one.microstream.X.notNull;
 
 /**
  * Convenient API layer to use the binary persistence functionality for a simple serializer.
@@ -125,7 +111,7 @@ public interface Serializer<M> extends AutoCloseable
 		final Function<M, Binary>     toBinary
 	)
 	{
-		return new Serializer.Default<>(
+		return new Default<>(
 			notNull(foundation),
 			notNull(toMedium  ),
 			notNull(toBinary  )

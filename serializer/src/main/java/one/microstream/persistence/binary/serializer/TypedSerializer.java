@@ -1,4 +1,4 @@
-package one.microstream.persistence.binary.util;
+package one.microstream.persistence.binary.serializer;
 
 /*-
  * #%L
@@ -20,7 +20,18 @@ package one.microstream.persistence.binary.util;
  * #L%
  */
 
-import static one.microstream.X.notNull;
+import one.microstream.X;
+import one.microstream.collections.types.XGettingSequence;
+import one.microstream.memory.XMemory;
+import one.microstream.persistence.binary.types.Binary;
+import one.microstream.persistence.binary.types.ChunksWrapper;
+import one.microstream.persistence.binary.serializer.Serializer.Default.SerializerStorer;
+import one.microstream.persistence.binary.util.*;
+import one.microstream.persistence.types.PersistenceManager;
+import one.microstream.persistence.types.PersistenceTypeDefinition;
+import one.microstream.persistence.types.Storer;
+import one.microstream.util.logging.Logging;
+import org.slf4j.Logger;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -29,18 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-import org.slf4j.Logger;
-
-import one.microstream.X;
-import one.microstream.collections.types.XGettingSequence;
-import one.microstream.memory.XMemory;
-import one.microstream.persistence.binary.types.Binary;
-import one.microstream.persistence.binary.types.ChunksWrapper;
-import one.microstream.persistence.binary.util.Serializer.Default.SerializerStorer;
-import one.microstream.persistence.types.PersistenceManager;
-import one.microstream.persistence.types.PersistenceTypeDefinition;
-import one.microstream.persistence.types.Storer;
-import one.microstream.util.logging.Logging;
+import static one.microstream.X.notNull;
 
 /**
  * Convenient API layer to use the binary persistence functionality for a serializer
@@ -139,7 +139,7 @@ public interface TypedSerializer<M> extends Serializer<M>
 		final Function<M, Binary>     toBinary
 	)
 	{
-		return new TypedSerializer.Default<>(
+		return new Default<>(
 			notNull(foundation),
 			notNull(toMedium  ),
 			notNull(toBinary  )
@@ -242,8 +242,8 @@ public interface TypedSerializer<M> extends Serializer<M>
 		private Storer                                storer                     ;
 		private Binary                                input                      ;
 		private Binary                                output                     ;
-		private TypeDefinitionBuilder                 typeDefintionBuilder       ;
-		private TypeDefinitionImporter                typeDefinitionImporter     ;
+		private TypeDefinitionBuilder typeDefintionBuilder       ;
+		private TypeDefinitionImporter typeDefinitionImporter     ;
 		private SerializerTypeInfoStrategy			  typeInfoStrategy           ;
 		private TypeInfoCache                         typeInfoCache              ;
 		private long                                  lastTypeInfoImportTimeStamp;

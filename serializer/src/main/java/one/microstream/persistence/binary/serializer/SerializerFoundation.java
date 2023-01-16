@@ -1,4 +1,4 @@
-package one.microstream.persistence.binary.util;
+package one.microstream.persistence.binary.serializer;
 
 /*-
  * #%L
@@ -20,8 +20,6 @@ package one.microstream.persistence.binary.util;
  * #L%
  */
 
-import java.nio.ByteOrder;
-
 import one.microstream.X;
 import one.microstream.collections.EqHashEnum;
 import one.microstream.collections.EqHashTable;
@@ -32,78 +30,11 @@ import one.microstream.collections.types.XMap;
 import one.microstream.collections.types.XTable;
 import one.microstream.functional.InstanceDispatcherLogic;
 import one.microstream.persistence.binary.one.microstream.persistence.types.BinaryRootReferenceProvider;
-import one.microstream.persistence.binary.types.Binary;
-import one.microstream.persistence.binary.types.BinaryFieldLengthResolver;
-import one.microstream.persistence.binary.types.BinaryLegacyTypeHandlerCreator;
-import one.microstream.persistence.binary.types.BinaryLoader;
-import one.microstream.persistence.binary.types.BinaryPersistence;
-import one.microstream.persistence.binary.types.BinaryPersistenceRootsProvider;
-import one.microstream.persistence.binary.types.BinaryStorer;
-import one.microstream.persistence.binary.types.BinaryTypeHandlerCreator;
-import one.microstream.persistence.binary.types.BinaryValueSetter;
-import one.microstream.persistence.binary.types.BinaryValueTranslatorKeyBuilder;
-import one.microstream.persistence.binary.types.BinaryValueTranslatorMappingProvider;
-import one.microstream.persistence.binary.types.BinaryValueTranslatorProvider;
+import one.microstream.persistence.binary.types.*;
+import one.microstream.persistence.binary.util.SerializerTypeInfoStrategyCreator;
 import one.microstream.persistence.internal.LoggingLegacyTypeMappingResultor;
 import one.microstream.persistence.internal.PersistenceTypeHandlerProviderCreating;
-import one.microstream.persistence.types.ByteOrderTargeting;
-import one.microstream.persistence.types.Persistence;
-import one.microstream.persistence.types.PersistenceAbstractTypeHandlerSearcher;
-import one.microstream.persistence.types.PersistenceContextDispatcher;
-import one.microstream.persistence.types.PersistenceCustomTypeHandlerRegistry;
-import one.microstream.persistence.types.PersistenceDataTypeHolder;
-import one.microstream.persistence.types.PersistenceEagerStoringFieldEvaluator;
-import one.microstream.persistence.types.PersistenceFieldEvaluator;
-import one.microstream.persistence.types.PersistenceFieldLengthResolver;
-import one.microstream.persistence.types.PersistenceInstantiator;
-import one.microstream.persistence.types.PersistenceLegacyTypeHandlerCreator;
-import one.microstream.persistence.types.PersistenceLegacyTypeHandlingListener;
-import one.microstream.persistence.types.PersistenceLegacyTypeMapper;
-import one.microstream.persistence.types.PersistenceLegacyTypeMappingResultor;
-import one.microstream.persistence.types.PersistenceLoader;
-import one.microstream.persistence.types.PersistenceManager;
-import one.microstream.persistence.types.PersistenceMemberMatchingProvider;
-import one.microstream.persistence.types.PersistenceObjectIdProvider;
-import one.microstream.persistence.types.PersistenceObjectManager;
-import one.microstream.persistence.types.PersistenceObjectRegistry;
-import one.microstream.persistence.types.PersistenceRefactoringMappingProvider;
-import one.microstream.persistence.types.PersistenceRefactoringMemberIdentifierBuilder;
-import one.microstream.persistence.types.PersistenceRefactoringTypeIdentifierBuilder;
-import one.microstream.persistence.types.PersistenceRegisterer;
-import one.microstream.persistence.types.PersistenceRootReference;
-import one.microstream.persistence.types.PersistenceRootReferenceProvider;
-import one.microstream.persistence.types.PersistenceRootResolverProvider;
-import one.microstream.persistence.types.PersistenceRootsProvider;
-import one.microstream.persistence.types.PersistenceSizedArrayLengthController;
-import one.microstream.persistence.types.PersistenceSource;
-import one.microstream.persistence.types.PersistenceStorer;
-import one.microstream.persistence.types.PersistenceTarget;
-import one.microstream.persistence.types.PersistenceTypeAnalyzer;
-import one.microstream.persistence.types.PersistenceTypeDefinitionCreator;
-import one.microstream.persistence.types.PersistenceTypeDescriptionResolverProvider;
-import one.microstream.persistence.types.PersistenceTypeDictionaryCreator;
-import one.microstream.persistence.types.PersistenceTypeDictionaryManager;
-import one.microstream.persistence.types.PersistenceTypeDictionaryParser;
-import one.microstream.persistence.types.PersistenceTypeEvaluator;
-import one.microstream.persistence.types.PersistenceTypeHandler;
-import one.microstream.persistence.types.PersistenceTypeHandlerCreator;
-import one.microstream.persistence.types.PersistenceTypeHandlerEnsurer;
-import one.microstream.persistence.types.PersistenceTypeHandlerManager;
-import one.microstream.persistence.types.PersistenceTypeHandlerProvider;
-import one.microstream.persistence.types.PersistenceTypeHandlerRegistration;
-import one.microstream.persistence.types.PersistenceTypeHandlerRegistry;
-import one.microstream.persistence.types.PersistenceTypeIdProvider;
-import one.microstream.persistence.types.PersistenceTypeInstantiator;
-import one.microstream.persistence.types.PersistenceTypeInstantiatorProvider;
-import one.microstream.persistence.types.PersistenceTypeLineageCreator;
-import one.microstream.persistence.types.PersistenceTypeManager;
-import one.microstream.persistence.types.PersistenceTypeMismatchValidator;
-import one.microstream.persistence.types.PersistenceTypeNameMapper;
-import one.microstream.persistence.types.PersistenceTypeRegistry;
-import one.microstream.persistence.types.PersistenceTypeResolver;
-import one.microstream.persistence.types.PersistenceUnreachableTypeHandlerCreator;
-import one.microstream.persistence.types.Persister;
-import one.microstream.persistence.types.Unpersistable;
+import one.microstream.persistence.types.*;
 import one.microstream.reference.Reference;
 import one.microstream.reflect.ClassLoaderProvider;
 import one.microstream.typing.LambdaTypeRecognizer;
@@ -111,6 +42,8 @@ import one.microstream.typing.TypeMapping;
 import one.microstream.typing.XTypes;
 import one.microstream.util.BufferSizeProviderIncremental;
 import one.microstream.util.InstanceDispatcher;
+
+import java.nio.ByteOrder;
 
 /**
  * This type serves as a factory instance for building {@link Serializer} instances.
@@ -432,11 +365,11 @@ extends ByteOrderTargeting.Mutable<F>,
 	
 	public static SerializerFoundation<?> New()
 	{
-		return new SerializerFoundation.Default<>();
+		return new Default<>();
 	}
 
 	
-	public class Default<F extends SerializerFoundation.Default<?>>
+	public class Default<F extends Default<?>>
 	extends InstanceDispatcher.Default
 	implements SerializerFoundation<F>, Unpersistable
 	{
@@ -453,7 +386,7 @@ extends ByteOrderTargeting.Mutable<F>,
 		private final PersistenceObjectIdProvider           oidProvider       = PersistenceObjectIdProvider.Transient();
 		private final PersistenceTypeIdProvider             tidProvider       = PersistenceTypeIdProvider.Transient();
 		private final PersistenceContextDispatcher<Binary>  contextDispatcher = PersistenceContextDispatcher.LocalObjectRegistration();
-		private final PersistenceRootsProvider<Binary>      rootsProvider     = PersistenceRootsProvider.Empty();
+		private final PersistenceRootsProvider<Binary>      rootsProvider     = new EmptyPersistenceRootsProvider();
 		
 		private PersistenceObjectManager<Binary>               objectManager                   ;
 		private PersistenceTypeRegistry                        typeRegistry                    ;
