@@ -20,8 +20,6 @@ package one.microstream.collections.types;
  * #L%
  */
 
-import one.microstream.collections.sorting.XLadder;
-
 
 /**
  * Intermediate list type providing getting, adding, removing concerns to act as a common super type for

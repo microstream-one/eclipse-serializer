@@ -20,8 +20,6 @@ package one.microstream.collections.types;
  * #L%
  */
 
-import one.microstream.collections.sorting.XSortation;
-
 /**
  * Intermediate sequence type providing getting, adding, removing concerns to act as a common super type for
  * {@link XSequence} and {@link XSortation}. This is necessary because {@link XSortation} cannot provide
