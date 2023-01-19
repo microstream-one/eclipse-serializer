@@ -391,30 +391,6 @@ public final class XMemory
 
 
 
-	// memory allocation //
-
-	public static final long allocate(final long bytes)
-	{
-		return MEMORY_ACCESSOR.allocateMemory(bytes);
-	}
-
-	public static final long reallocate(final long address, final long bytes)
-	{
-		return MEMORY_ACCESSOR.reallocateMemory(address, bytes);
-	}
-
-	public static final void free(final long address)
-	{
-		MEMORY_ACCESSOR.freeMemory(address);
-	}
-
-	public static final void fillMemory(final long address, final long length, final byte value)
-	{
-		MEMORY_ACCESSOR.fillMemory(address, length, value);
-	}
-
-
-
 	// memory size querying logic //
 
 	/**
@@ -445,56 +421,6 @@ public final class XMemory
 	public static final int byteSizeObjectHeader(final Class<?> c)
 	{
 		return MEMORY_SIZE_PROPERTIES.byteSizeObjectHeader(c);
-	}
-
-	public static final int byteSizeFieldValue(final Field field)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeFieldValue(field);
-	}
-
-	public static final int byteSizeFieldValue(final Class<?> type)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeFieldValue(type);
-	}
-
-	public static final long byteSizeArray_byte(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_byte(elementCount);
-	}
-
-	public static final long byteSizeArray_boolean(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_boolean(elementCount);
-	}
-
-	public static final long byteSizeArray_short(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_short(elementCount);
-	}
-
-	public static final long byteSizeArray_char(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_char(elementCount);
-	}
-
-	public static final long byteSizeArray_int(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_int(elementCount);
-	}
-
-	public static final long byteSizeArray_float(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_float(elementCount);
-	}
-
-	public static final long byteSizeArray_long(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_long(elementCount);
-	}
-
-	public static final long byteSizeArray_double(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_double(elementCount);
 	}
 
 	public static final long byteSizeArrayObject(final long elementCount)
@@ -542,11 +468,6 @@ public final class XMemory
 		throw new IllegalArgumentException();
 	}
 
-	public static final int bitSize_byte()
-	{
-		return Byte.SIZE;
-	}
-
 	public static final int byteSize_byte()
 	{
 		return Byte.BYTES;
@@ -592,58 +513,12 @@ public final class XMemory
 		return MEMORY_SIZE_PROPERTIES.byteSizeReference();
 	}
 
-	public static final int bitSize_boolean()
-	{
-		return Byte.SIZE;
-	}
-
-	public static final int bitSize_short()
-	{
-		return Short.SIZE;
-	}
-
-	public static final int bitSize_char()
-	{
-		return Character.SIZE;
-	}
-
-	public static final int bitSize_int()
-	{
-		return Integer.SIZE;
-	}
-
-	public static final int bitSize_float()
-	{
-		return Float.SIZE;
-	}
-
-	public static final int bitSize_long()
-	{
-		return Long.SIZE;
-	}
-
-	public static final int bitSize_double()
-	{
-		return Double.SIZE;
-	}
-
-
 
 	// field offset abstraction //
 
 	public static final long objectFieldOffset(final Field field)
 	{
 		return MEMORY_ACCESSOR.objectFieldOffset(field);
-	}
-
-	public static final long[] objectFieldOffsets(final Field[] fields)
-	{
-		return MEMORY_ACCESSOR.objectFieldOffsets(fields);
-	}
-
-	public static final long objectFieldOffset(final Class<?> c, final Field field)
-	{
-		return MEMORY_ACCESSOR.objectFieldOffset(c, field);
 	}
 
 	public static final long[] objectFieldOffsets(final Class<?> c, final Field[] fields)
@@ -846,15 +721,6 @@ public final class XMemory
 
 	// transformative byte array primitive value setters //
 
-	public static final void set_byteInBytes(final byte[] bytes, final int index, final byte value)
-	{
-		MEMORY_ACCESSOR.set_byteInBytes(bytes, index, value);
-	}
-
-	public static final void set_booleanInBytes(final byte[] bytes, final int index, final boolean value)
-	{
-		MEMORY_ACCESSOR.set_booleanInBytes(bytes, index, value);
-	}
 
 	public static final void set_shortInBytes(final byte[] bytes, final int index, final short value)
 	{
@@ -985,20 +851,6 @@ public final class XMemory
 
 
 
-	// conversion to byte array //
-
-	public static final byte[] asByteArray(final long[] longArray)
-	{
-		return MEMORY_ACCESSOR.asByteArray(longArray);
-	}
-
-	public static final byte[] asByteArray(final long value)
-	{
-		return MEMORY_ACCESSOR.asByteArray(value);
-	}
-
-
-
 	// special system methods, not really memory-related //
 
 	public static final void ensureClassInitialized(final Class<?> c)
@@ -1087,11 +939,6 @@ public final class XMemory
 		);
 	}
 
-	public static final ByteBuffer allocateDirectNativeDefault()
-	{
-		return allocateDirectNative(XMemory.defaultBufferSize());
-	}
-
 	// another episode of "They couldn't even implement the most basic functionality."
 	public static final byte[] toArray(final ByteBuffer source)
 	{
@@ -1106,20 +953,7 @@ public final class XMemory
 		return bytes;
 	}
 
-	public static final byte[] toArray(final ByteBuffer source, final int position, final int length)
-	{
-		final long plState = getPositionLimit(source);
-		setPositionLimit(source, position, position + length);
 
-		final byte[] bytes = new byte[length];
-		source.get(bytes, 0, length);
-
-		// why would a querying methode intrinsically increase the position? WHY?
-		setPositionLimit(source, plState);
-
-		return bytes;
-	}
-	
 	public static final byte[] toArray(final ByteBuffer[] sources)
 	{
 		int overallLength = 0;
@@ -1169,32 +1003,6 @@ public final class XMemory
 
 		return buffer;
 	}
-	
-	public static final ByteBuffer capLimit(final ByteBuffer buffer, final long limit)
-	{
-		if(limit < buffer.limit())
-		{
-			buffer.limit((int)limit);
-		}
-
-		return buffer;
-	}
-	
-	public static final ByteBuffer clearForLimit(final ByteBuffer buffer, final long limit)
-	{
-		buffer.clear();
-		capLimit(buffer, limit);
-
-		return buffer;
-	}
-
-	public static final ByteBuffer slice(final ByteBuffer source, final long position, final long limit)
-	{
-		final ByteBuffer tmp = source.duplicate();
-		tmp.limit((int)(position + limit)).position((int)position);
-		return tmp.slice();
-	}
-
 
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //

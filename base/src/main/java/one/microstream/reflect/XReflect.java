@@ -31,7 +31,6 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -52,7 +51,6 @@ import one.microstream.exceptions.NoSuchMethodRuntimeException;
 import one.microstream.functional.Instantiator;
 import one.microstream.functional.XFunc;
 import one.microstream.memory.XMemory;
-import one.microstream.typing.XTypes;
 import one.microstream.util.UtilStackTrace;
 
 
@@ -141,106 +139,6 @@ public final class XReflect
 		return !Modifier.isStatic(field.getModifiers());
 	}
 
-	public static final String toFieldName(final Field field)
-	{
-		return field.getName();
-	}
-
-	public static final boolean isInterfaceOfType(
-		final Class<?> interfaceClass           ,
-		final Class<?> implementedSuperInterface
-	)
-	{
-		if(interfaceClass == implementedSuperInterface)
-		{
-			return true;
-		}
-
-		final Class<?>[] interfaces = interfaceClass.getInterfaces();
-		boolean isInterfaceType = false;
-		for(final Class<?> i : interfaces)
-		{
-			isInterfaceType |= isInterfaceOfType(i, implementedSuperInterface);
-		}
-		return isInterfaceType;
-	}
-
-	public static final boolean implementsInterface(final Class<?> c, final Class<?> interfaceClass)
-	{
-		if(c == null || interfaceClass == null || !interfaceClass.isInterface())
-		{
-			return false;
-		}
-
-		final Class<?>[] interfaces = XReflect.getClassHierarchyInterfaces(c);
-		for(final Class<?> i : interfaces)
-		{
-			if(isInterfaceOfType(i, interfaceClass))
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static final Class<?>[] getClassHierarchyInterfaces(final Class<?> classClass)
-	{
-		if(classClass.isInterface() || classClass.isArray() || classClass.isPrimitive())
-		{
-			throw new IllegalArgumentException("Can only handle actual classes.");
-		}
-
-		final BulkList<Class<?>[]> hierarchy = new BulkList<>();
-		int interfaceCount = 0;
-
-		for(Class<?> current = classClass; current != Object.class; current = current.getSuperclass())
-		{
-			final Class<?>[] currentClassInterfaces;
-			interfaceCount += (currentClassInterfaces = current.getInterfaces()).length;
-			hierarchy.add(currentClassInterfaces);
-		}
-
-		final Class<?>[] allInterfaces = new Class<?>[interfaceCount];
-		int allInterfacesIndex = 0;
-		for(int i = XTypes.to_int(hierarchy.size()); i-- > 0;)
-		{
-			final Class<?>[] currentClassInterfaces = hierarchy.at(i);
-			for(int j = 0; j < currentClassInterfaces.length; j++)
-			{
-				allInterfaces[allInterfacesIndex++] = currentClassInterfaces[j];
-			}
-		}
-		return allInterfaces;
-	}
-
-	public static final boolean isOfClassType(final Class<?> c, final Class<?> superclass)
-	{
-		if(c.isInterface() || superclass.isInterface())
-		{
-			return false;
-		}
-
-		return c == superclass ? true : isSubClassOf(c, superclass);
-	}
-
-	public static final boolean isSubClassOf(final Class<?> c, final Class<?> superclass)
-	{
-		if(c == null || superclass == null)
-		{
-			return false;
-		}
-		Class<?> currentType = c;
-		while(currentType != null)
-		{
-			currentType = currentType.getSuperclass();
-			if(currentType == superclass)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	/*
 	 * Welcome to a method checking if a "Class" is a class
@@ -436,18 +334,6 @@ public final class XReflect
 		}
 	}
 
-	public static final Field getField(final Class<?> c, final String name) throws NoSuchFieldRuntimeException
-	{
-		try
-		{
-			return c.getField(name);
-		}
-		catch(final NoSuchFieldException e)
-		{
-			throw new NoSuchFieldRuntimeException(e);
-		}
-	}
-
 	public static final Field getAnyField(final Class<?> c, final String name) throws NoSuchFieldRuntimeException
 	{
 		notNull(name);
@@ -508,91 +394,6 @@ public final class XReflect
 		}
 	}
 
-	public static final Method getAnyMethod(
-		final Class<?> c   ,
-		final String   name
-	)
-		throws NoSuchMethodRuntimeException
-	{
-		notNull(name);
-
-		try
-		{
-			return getAnyMethod(c, method ->
-			name.equals(method.getName())
-		);
-		}
-		catch(final NoSuchFieldRuntimeException e)
-		{
-			// (28.10.2013 TM)EXCP: proper exception
-			throw new NoSuchMethodRuntimeException(
-				new NoSuchMethodException("No method with name " + name + " found in type " + c)
-			);
-		}
-	}
-
-	public static final Method getAnyMethod(
-		final Class<?>                  c        ,
-		final Predicate<? super Method> predicate
-	)
-		throws NoSuchMethodRuntimeException
-	{
-		final XReference<Method> result = X.Reference(null);
-		iterateAllClassMethods(c, field ->
-		{
-			if(predicate.test(field))
-			{
-				result.set(field);
-				throw X.BREAK();
-			}
-		});
-
-		if(result.get() != null)
-		{
-			return result.get();
-		}
-
-		throw new NoSuchMethodRuntimeException(new NoSuchMethodException());
-	}
-
-	public static final <C extends Consumer<? super Method>> C iterateAllClassMethods(
-		final Class<?> clazz,
-		final C        logic
-	)
-	{
-		return iterateAllClassMethods(clazz, Object.class, logic);
-	}
-
-	public static final <C extends Consumer<? super Method>> C iterateAllClassMethods(
-		final Class<?> clazz,
-		final Class<?> bound,
-		final C        logic
-	)
-	{
-		// applies to Object.class, Void.class, interfaces, primitives. See Class.getSuperclass() JavaDoc.
-		if(clazz.isArray() || clazz.getSuperclass() == null)
-		{
-			return logic;
-		}
-
-		try
-		{
-			for(Class<?> currentClass = clazz; currentClass != bound; currentClass = currentClass.getSuperclass())
-			{
-				for(final Method method : currentClass.getDeclaredMethods())
-				{
-					logic.accept(method);
-				}
-			}
-		}
-		catch(final ThrowBreak b)
-		{
-			/* abort inner iteration */
-		}
-
-		return logic;
-	}
-
 	public static final boolean isFinal(final Member field)
 	{
 		return Modifier.isFinal(field.getModifiers());
@@ -601,21 +402,6 @@ public final class XReflect
 	public static final boolean isStatic(final Member field)
 	{
 		return Modifier.isStatic(field.getModifiers());
-	}
-
-	public static final boolean isSynthetic(final Member field)
-	{
-		return Modifier.isSynchronized(field.getModifiers());
-	}
-
-	public static final boolean isStaticFinal(final Member field)
-	{
-		return isStatic(field) && isFinal(field);
-	}
-
-	public static final boolean isPrimitive(final Field field)
-	{
-		return field.getType().isPrimitive();
 	}
 
 	public static final boolean isReference(final Field field)
@@ -628,40 +414,9 @@ public final class XReflect
 		return Modifier.isTransient(field.getModifiers());
 	}
 
-	public static final boolean isNotTransient(final Field field)
-	{
-		return !Modifier.isTransient(field.getModifiers());
-	}
-
-	public static final boolean isPrivate(final Member field)
-	{
-		return Modifier.isPrivate(field.getModifiers());
-	}
-
-	public static final boolean isProtected(final Member field)
-	{
-		return Modifier.isProtected(field.getModifiers());
-	}
-
-	public static final boolean isPublic(final Member field)
-	{
-		return Modifier.isPublic(field.getModifiers());
-	}
-
-	public static final boolean isDefaultVisible(final Member field)
-	{
-		final int modifiers = field.getModifiers();
-		return !(Modifier.isPrivate(modifiers) || Modifier.isProtected(modifiers) || Modifier.isPublic(modifiers));
-	}
-
 	public static final boolean isAbstract(final Class<?> type)
 	{
 		return Modifier.isAbstract(type.getModifiers());
-	}
-
-	public static final boolean isAbstract(final Method method)
-	{
-		return Modifier.isAbstract(method.getModifiers());
 	}
 
 	/**
@@ -730,18 +485,6 @@ public final class XReflect
 		}
 	}
 
-	public static int getField_int(final Field f, final Object obj) throws IllegalAccessRuntimeException
-	{
-		try
-		{
-			return f.getInt(obj);
-		}
-		catch(final IllegalAccessException e)
-		{
-			throw new IllegalAccessRuntimeException(e);
-		}
-	}
-
 	/**
 	 * Resolves the passed type name to a runtime type (instance of type {@link Class}).
 	 * In contrary to JDK's type resolving mechanisms, this method resolves primitive type names, as well.
@@ -773,85 +516,10 @@ public final class XReflect
 	}
 
 	/**
-	 * Uses {@link Class#forName(String)} which uses the calling class's {@link ClassLoader}.
-	 *
-	 * @param typeName the type name to be resolved, primitive name or full qualified type name.
-	 *
-	 * @return the resolved type instance (of type {@link Class})
-	 *
-	 * @throws LinkageError see {@link Class#forName(String)}
-	 * @throws ExceptionInInitializerError see {@link Class#forName(String)}
-	 * @throws ClassNotFoundException see {@link Class#forName(String)}
-	 */
-	public static final Class<?> resolveTypeForName(final String typeName)
-		throws LinkageError, ExceptionInInitializerError, ClassNotFoundException
-	{
-		final Class<?> type = tryResolvePrimitiveType(typeName);
-		return type != null
-			? type
-			: Class.forName(typeName)
-		;
-	}
-
-	/**
-	 * Calls {@link #resolveType(String, ClassLoader)}, but suppresses any {@link ClassNotFoundException} and returns
-	 * {@code null} instead. This is useful if the passed class name is only potentially resolvable
-	 * at runtime and is still valid if not. Example: resolving a old type dictionary as far as possible
-	 * and marking the not resolvable types as unresolvable.
-	 *
-	 * @param typeName the type name to be resolved, primitive name or full qualified type name.
-	 * @param classLoader class loader from which the class must be loaded
-	 * @return the {@link Class} instance representing the passed class name or {@code null} if unresolevable.
-	 */
-	public static final Class<?> tryResolveType(final String typeName, final ClassLoader classLoader)
-	{
-		try
-		{
-			return XReflect.resolveType(typeName, classLoader);
-		}
-		catch(final ClassNotFoundException e)
-		{
-			// intentionally return null
-			return null;
-		}
-	}
-
-	/**
-	 * Alias for {@link #tryIterativeResolveType(ClassLoader, String...)} with the following difference:<br>
-	 * If none of the passed {@literal typeNames} can be resolved, a {@link ClassNotFoundException} listing
-	 * all passed {@literal typeNames} is thrown.
-	 *
-	 * @param classLoader class loader from which the class must be loaded
-	 * @param typeNames the full qualified type names to be attempted to be resolved one by one.
-	 *
-	 * @return the first successfully resolved {@link Class} instance.
-	 *
-	 * @throws ClassNotFoundException if none of the passed {@literal typeNames} could have been resolved.
-	 *
-	 * @see #tryIterativeResolveType(ClassLoader, String...)
-	 */
-	public static final Class<?> iterativeResolveType(
-		final ClassLoader classLoader,
-		final String...   typeNames
-	)
-		throws ClassNotFoundException
-	{
-		final Class<?> type = tryIterativeResolveType(classLoader, typeNames);
-		if(type != null)
-		{
-			return type;
-		}
-
-		// if none of the provided type names resulted in a match, a combined ClassNotFoundException is thrown
-		throw new ClassNotFoundException(Arrays.toString(typeNames));
-	}
-
-	/**
 	 * This methods attempts to resolve the passed {@literal typeNames} to {@link Class} instances using
 	 * {@link #resolveType(String, ClassLoader)} one by one.
 	 * The {@link Class} instance of the first successful attempt is returned.
 	 * If none of the passed {@literal typeNames} can be resolved, {@literal null} is returned.
-	 * See {@link #iterativeResolveType(ClassLoader, String...)} for an exception-throwing version.
 	 * <p>
 	 * <b>Note:</b><br>
 	 * While it is generally a bad idea to just use a trial and error approach until something works,
@@ -908,77 +576,6 @@ public final class XReflect
 		return ClassLoader.getSystemClassLoader();
 	}
 
-	/**
-	 * Calls {@link #resolveType(String, ClassLoader)} with {@link #defaultTypeResolvingClassLoader()}.
-	 * Make sure this is a suitable {@link ClassLoader} when using this method.
-	 *
-	 * @param typeName the type name to be resolved, primitive name or full qualified type name.
-	 * @return the resolved type instance (of type {@link Class})
-	 *
-	 * @throws LinkageError see {@link Class#forName(String)}
-	 * @throws ExceptionInInitializerError see {@link Class#forName(String)}
-	 * @throws ClassNotFoundException see {@link Class#forName(String)}
-	 */
-	public static final Class<?> resolveType(final String typeName)
-		throws LinkageError, ExceptionInInitializerError, ClassNotFoundException
-	{
-		return resolveType(typeName, defaultTypeResolvingClassLoader());
-	}
-
-	/**
-	 * Calls {@link #tryResolveType(String, ClassLoader)} with {@link #defaultTypeResolvingClassLoader()}.
-	 * Make sure this is a suitable {@link ClassLoader} when using this method.
-	 *
-	 * @param typeName the type name to be resolved, primitive name or full qualified type name.
-	 * @return the {@link Class} instance representing the passed class name or {@code null} if unresolevable.
-	 */
-	public static final Class<?> tryResolveType(final String typeName)
-	{
-		return tryResolveType(typeName, defaultTypeResolvingClassLoader());
-	}
-
-	/**
-	 * Calls {@link #iterativeResolveType(ClassLoader, String...)} with {@link #defaultTypeResolvingClassLoader()}.
-	 * Make sure this is a suitable {@link ClassLoader} when using this method.
-	 *
-	 * @param typeNames the full qualified type names to be attempted to be resolved one by one.
-	 *
-	 * @return the first successfully resolved {@link Class} instance.
-	 *
-	 * @throws ClassNotFoundException if none of the passed {@literal typeNames} could have been resolved.
-	 */
-	public static final Class<?> iterativeResolveType(final String... typeNames)
-		throws ClassNotFoundException
-	{
-		return iterativeResolveType(defaultTypeResolvingClassLoader(), typeNames);
-	}
-
-	public static final Class<?> tryIterativeResolveType(final String... typeNames)
-	{
-		return tryIterativeResolveType(defaultTypeResolvingClassLoader(), typeNames);
-	}
-
-	public static final Field tryGetDeclaredField(
-		final Class<?> declaringClass,
-		final String   fieldName
-	)
-	{
-		if(declaringClass == null)
-		{
-			return null;
-		}
-
-		try
-		{
-			return declaringClass.getDeclaredField(fieldName);
-		}
-		catch(final ReflectiveOperationException e)
-		{
-			// field may be unresolvable
-			return null;
-		}
-	}
-
 	public static final Class<?> tryResolvePrimitiveType(final String className)
 	{
 		switch(className)
@@ -1001,21 +598,6 @@ public final class XReflect
 		return tryResolvePrimitiveType(typeName) != null;
 	}
 
-	public static final boolean isOfAnyType(
-		final Class<?>    subject   ,
-		final Class<?>... supertypes
-	)
-	{
-		for(final Class<?> s : supertypes)
-		{
-			if(s.isAssignableFrom(subject))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public static final boolean isOfAnyType(
 		final Class<?>           subject   ,
@@ -1075,58 +657,6 @@ public final class XReflect
 		return c.getName() + fieldIdentifierDelimiter() + fieldName;
 	}
 
-	public static int getFieldIdentifierDelimiterIndex(final String identifier)
-	{
-		final int index = identifier.lastIndexOf(fieldIdentifierDelimiter());
-		if(index < 0)
-		{
-			throw new IllegalArgumentException("No delimiter found in identifier");
-		}
-
-		return index;
-	}
-
-	public static String getFieldIdentifierClassName(final String fieldIdentifier)
-	{
-		return fieldIdentifier.substring(0, getFieldIdentifierDelimiterIndex(fieldIdentifier));
-	}
-
-	public static String getFieldIdentifierFieldName(final String fieldIdentifier)
-	{
-		return fieldIdentifier.substring(getFieldIdentifierDelimiterIndex(fieldIdentifier) + 1);
-	}
-
-	public static <A> Class<A> validateInterfaceType(final Class<A> type)
-	{
-		if(!type.isInterface())
-		{
-			throw UtilStackTrace.cutStacktraceByOne(
-				new IllegalArgumentException("Not an interface type:" + type)
-			);
-		}
-		return type;
-	}
-
-	public static <A> Class<A> validateNonInterfaceType(final Class<A> type)
-	{
-		if(type.isInterface())
-		{
-			throw UtilStackTrace.cutStacktraceByOne(new IllegalArgumentException("Interface type:" + type));
-		}
-		return type;
-	}
-
-	public static <A> Class<A> validateNonArrayType(final Class<A> type)
-	{
-		if(type.isArray())
-		{
-			throw UtilStackTrace.cutStacktraceByOne(
-				new IllegalArgumentException("Array type:" + type)
-			);
-		}
-		return type;
-	}
-
 	public static <A> Class<A> validateArrayType(final Class<A> arrayType)
 	{
 		if(!arrayType.isArray())
@@ -1136,17 +666,6 @@ public final class XReflect
 			);
 		}
 		return arrayType;
-	}
-
-	public static <A> Class<A> validatePrimitiveType(final Class<A> primitiveType)
-	{
-		if(!primitiveType.isPrimitive())
-		{
-			throw UtilStackTrace.cutStacktraceByOne(
-				new IllegalArgumentException("Not a primitive type:" + primitiveType)
-			);
-		}
-		return primitiveType;
 	}
 
 	public static <A> Class<A> validateNonPrimitiveType(final Class<A> primitiveType)
@@ -1252,35 +771,6 @@ public final class XReflect
 		return Proxy.class.isAssignableFrom(c);
 	}
 
-	public static boolean isValidProxyClass(final Class<?> c)
-	{
-		// horribly wrong name for a validation method
-		return Proxy.isProxyClass(c);
-	}
-
-	public static Field[] collectPrimitiveFieldsByByteSize(final Field[] fields, final int byteSize)
-	{
-		if(byteSize != XMemory.byteSize_byte()
-		&& byteSize != XMemory.byteSize_short()
-		&& byteSize != XMemory.byteSize_int()
-		&& byteSize != XMemory.byteSize_long()
-		)
-		{
-			throw new IllegalArgumentException("Invalid Java primitive byte size: " + byteSize);
-		}
-
-		final Field[] primFields = new Field[fields.length];
-		int primFieldsCount = 0;
-		for(int i = 0; i < fields.length; i++)
-		{
-			if(fields[i].getType().isPrimitive() && XMemory.byteSizePrimitive(fields[i].getType()) == byteSize)
-			{
-				primFields[primFieldsCount++] = fields[i];
-			}
-		}
-		return Arrays.copyOf(primFields, primFieldsCount);
-	}
-
 	public static final Field[] collectInstanceFields(final Class<?> objectClass)
 	{
 		return collectInstanceFields(objectClass, XFunc.all());
@@ -1309,20 +799,6 @@ public final class XReflect
 		return array;
 	}
 
-	public static int calculatePrimitivesLength(final Field[] primFields)
-	{
-		int length = 0;
-		for(int i = 0; i < primFields.length; i++)
-		{
-			if(!primFields[i].getType().isPrimitive())
-			{
-				throw new IllegalArgumentException("Not a primitive field: " + primFields[i]);
-			}
-			length += XMemory.byteSizePrimitive(primFields[i].getType());
-		}
-		return length;
-	}
-
 	public static <T, S extends T> S copyFields(
 		final T source,
 		final S target
@@ -1334,16 +810,6 @@ public final class XReflect
 	public static <T, S extends T> S copyFields(
 		final T                        source       ,
 		final S                        target       ,
-		final Predicate<? super Field> fieldSelector
-	)
-	{
-		return copyFields(source, target, fieldSelector, CopyPredicate::all);
-	}
-
-
-	public static <T, S extends T> S copyFields(
-		final T                        source       ,
-		final S                        target       ,
 		final Predicate<? super Field> fieldSelector,
 		final CopyPredicate            copySelector
 	)
@@ -1351,34 +817,6 @@ public final class XReflect
 		validateFamiliarClass(source, target);
 		final Field[] copyFields = collectInstanceFields(source.getClass(), fieldSelector);
 
-		for(final Field field : copyFields)
-		{
-			try
-			{
-				copyFieldValue(source, target, field, copySelector);
-			}
-			catch(final Exception e)
-			{
-				throw new MemoryException(
-					"Cannot copy value of field " + field
-					+ " from source instance " + XChars.systemString(source)
-					+ " to target instance "   + XChars.systemString(target) + ".",
-					e
-				);
-			}
-		}
-
-		return target;
-	}
-
-	final static <T, S extends T> S copyFields(
-		final T             source       ,
-		final S             target       ,
-		final Field[]       copyFields,
-		final CopyPredicate copySelector
-	)
-	{
-		validateFamiliarClass(source, target);
 		for(final Field field : copyFields)
 		{
 			try

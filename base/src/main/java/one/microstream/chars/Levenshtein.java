@@ -35,16 +35,6 @@ public final class Levenshtein
 	// constants //
 	//////////////
 
-	public static final double similiarity(final String a, final String b)
-	{
-		return similarity(a, b, Levenshtein::charDistance);
-	}
-
-	public static final double upperCaseSimiliarity(final String a, final String b)
-	{
-		return similarity(a.toUpperCase(), b.toUpperCase(), Levenshtein::charDistance);
-	}
-
 	public static final float charDistance(final char a, final char b)
 	{
 		return a == b ? 0.0f : 1.0f;

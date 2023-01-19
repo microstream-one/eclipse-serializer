@@ -102,28 +102,6 @@ public final class Logging
 	}
 	
 	/**
-	 * Registers an Object to String converter for a specific context.
-	 * 
-	 * @param context   the context to register the converter for
-	 * @param converter the Object to String converter
-	 * @return the old converter which was registered before, or null
-	 */
-	public static Function<Object, String> setToStringConverter(
-		final Object                   context  ,
-		final Function<Object, String> converter
-	)
-	{
-		final KeyValue<Object, Function<Object, String>> old = toStringConverters.putGet(
-			notNull(context  ),
-			notNull(converter)
-		);
-		return old != null
-			? old.value()
-			: null
-		;
-	}
-	
-	/**
 	 * Creates a new lazy argument for a specific context, whose Object to String converter will be used.
 	 * The lazy args {@link #toString()} method is only called on demand.
 	 * 
@@ -197,27 +175,6 @@ public final class Logging
 				return String.valueOf(supplier.get());
 			}
 		};
-	}
-
-	/**
-	 * Creates an Object to String converter, which only includes a limited amount of elements
-	 * in the resulting String, if {@link Iterable}s or arrays are to be converted.
-	 * <p>
-	 * For all other object's {@link String#valueOf(Object)} is used as converter.
-	 * <p>
-	 * For example, a {@link List} of {@link Integer}s from 1 to 100, and a limit of 3,
-	 * will result in a {@link String} like this:<br>
-	 * <code>"[1, 2, 3, ...]"</code>
-	 * 
-	 * @param limit maximum amount of converted elements in {@link Iterable}s and arrays
-	 * @return the new Object to String converter
-	 */
-	public static Function<Object, String> LimitedElementsToStringConverter(final int limit)
-	{
-		return LimitedElementsToStringConverter(
-			limit          ,
-			String::valueOf
-		);
 	}
 		
 	/**

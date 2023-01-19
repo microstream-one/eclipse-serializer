@@ -515,11 +515,6 @@ public final class JdkInternals
 		return VM.getByte(address);
 	}
 
-	public static final boolean get_boolean(final long address)
-	{
-		return VM.getBoolean(null, address);
-	}
-
 	public static final short get_short(final long address)
 	{
 		return VM.getShort(address);
@@ -753,19 +748,6 @@ public final class JdkInternals
 	{
 		VM.copyMemory(sourceAddress, targetAddress, length);
 	}
-
-	public static final void copyRange(
-		final Object source      ,
-		final long   sourceOffset,
-		final Object target      ,
-		final long   targetOffset,
-		final long   length
-	)
-	{
-		VM.copyMemory(source, sourceOffset, target, targetOffset, length);
-	}
-
-
 
 	// address-to-array range copying //
 
@@ -1195,49 +1177,6 @@ public final class JdkInternals
 	// SUN-specific low-level logic //
 	/////////////////////////////////
 
-	// unchecked throwing magic //
-
-	public static final void throwUnchecked(final Throwable t) // magically throws Throwable
-	{
-		// magic!
-		VM.throwException(t);
-	}
-
-
-
-	// compare and swap //
-
-	public static final boolean compareAndSwap_int(
-		final Object subject    ,
-		final long   offset     ,
-		final int    expected   ,
-		final int    replacement
-	)
-	{
-		return VM.compareAndSwapInt(subject, offset, expected, replacement);
-	}
-
-	public static final boolean compareAndSwap_long(
-		final Object subject    ,
-		final long   offset     ,
-		final long   expected   ,
-		final long   replacement
-	)
-	{
-		return VM.compareAndSwapLong(subject, offset, expected, replacement);
-	}
-
-	public static final boolean compareAndSwapObject(
-		final Object subject    ,
-		final long   offset     ,
-		final Object expected   ,
-		final Object replacement
-	)
-	{
-		return VM.compareAndSwapObject(subject, offset, expected, replacement);
-	}
-
-
 
 	// memory aligning arithmetic //
 
@@ -1251,28 +1190,6 @@ public final class JdkInternals
 		return (address & MEMORY_ALIGNMENT_MASK) + MEMORY_ALIGNMENT_FACTOR;
 	}
 
-
-
-	// static field base and offsets //
-
-	public static Object getStaticFieldBase(final Field field)
-	{
-		return VM.staticFieldBase(notNull(field)); // throws IllegalArgumentException, so no need to check here
-	}
-
-	public static long[] getStaticFieldOffsets(final Field[] fields)
-	{
-		final long[] offsets = new long[fields.length];
-		for(int i = 0; i < fields.length; i++)
-		{
-			if(!Modifier.isStatic(fields[i].getModifiers()))
-			{
-				throw new IllegalArgumentException("Not a static field: " + fields[i]);
-			}
-			offsets[i] = (int)VM.staticFieldOffset(fields[i]);
-		}
-		return offsets;
-	}
 
 
 	// memory statistics creation //

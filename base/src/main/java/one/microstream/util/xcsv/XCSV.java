@@ -79,19 +79,7 @@ public final class XCSV
 	
 	// only the common ones. Crazy special needs must be handled explicitely
 	static final char[] VALID_VALUE_SEPARATORS = {'\t', ';', ',', '|', ':'};
-	
-	
-	public static ValueSeparatorWeight ValueSeparatorWeight(
-		final char   valueSeparator,
-		final double weight
-	)
-	{
-		return new ValueSeparatorWeight.Default(
-			validateValueSeparator(valueSeparator),
-			(float)weight
-		);
-	}
-	
+
 	public interface ValueSeparatorWeight
 	{
 		public char valueSeparator();
@@ -150,27 +138,12 @@ public final class XCSV
 	// static methods //
 	///////////////////
 				
-	// intentionally "get" since this is not a trivial accessor but performs considerable logic
-	public static final char[] getValidValueSeparators()
-	{
-		return VALID_VALUE_SEPARATORS.clone();
-	}
 
 	public static final XCsvConfiguration configurationDefault()
 	{
 		return XCsvDataType.XCSV.configuration();
 	}
 
-	public static final XCsvConfiguration.Builder ConfigurationBuilder()
-	{
-		return new XCsvConfiguration.Builder.Default();
-	}
-
-	public static final XCsvAssembler.Builder<VarString> AssemblerBuilder()
-	{
-		return XCsvAssembler.Builder();
-	}
-	
 	public static boolean isValidValueSeparator(final char c)
 	{
 		return XChars.contains(VALID_VALUE_SEPARATORS, c);
@@ -189,33 +162,6 @@ public final class XCSV
 			+ Arrays.toString(VALID_VALUE_SEPARATORS)
 		);
 	}
-
-	public static final <T> void assembleRow(
-		final XCsvAssembler          assembler   ,
-		final XCsvRowAssembler<T>    rowAssembler,
-		final XIterable<? extends T> row
-	)
-	{
-		row.iterate(e ->
-			rowAssembler.accept(e, assembler)
-		);
-		assembler.completeRow();
-	}
-
-	public static final <T> void assembleRows(
-		final XCsvAssembler          assembler   ,
-		final XCsvRowAssembler<T>    rowAssembler,
-		final XIterable<? extends T> rows
-	)
-	{
-		rows.iterate(e ->
-		{
-			rowAssembler.accept(e, assembler);
-			assembler.completeRow();
-		});
-		assembler.completeRows();
-	}
-
 	
 	public static StringTable parse(final String rawData)
 	{
@@ -245,43 +191,7 @@ public final class XCSV
 	{
 		return parse(_charArrayRange.New(XChars.readChars(rawData)), configuration, dataType);
 	}
-	
-	public static String assembleString(final StringTable stringTable)
-	{
-		return assembleString(stringTable, null);
-	}
-	
-	public static String assembleString(final StringTable stringTable, final XCsvConfiguration configuration)
-	{
-		final VarString vs = VarString.New(calculateEstimatedCharCount(stringTable.rows().size()));
-		assembleString(vs, stringTable, configuration);
-		
-		return vs.toString();
-	}
 
-	public static StringTable parse(final _charArrayRange rawData)
-	{
-		return parse(rawData, null, null);
-	}
-		
-	public static StringTable parse(final _charArrayRange rawData, final XCsvDataType dataType)
-	{
-		return parse(rawData, null, dataType);
-	}
-	
-	public static StringTable parse(final _charArrayRange rawData, final char valueSeparator)
-	{
-		return parse(rawData, XCsvConfiguration.New(valueSeparator));
-	}
-	
-	public static StringTable parse(
-		final _charArrayRange   rawData         ,
-		final XCsvConfiguration csvConfiguration
-	)
-	{
-		return parse(rawData, csvConfiguration, null);
-	}
-			
 	public static StringTable parse(
 		final _charArrayRange   rawData         ,
 		final XCsvConfiguration csvConfiguration,
@@ -314,11 +224,6 @@ public final class XCSV
 		;
 	}
 
-	public static final VarString assembleString(final VarString vs, final StringTable st)
-	{
-		return assembleString(vs, st, null);
-	}
-	
 	public static final VarString assembleString(
 		final VarString         vs              ,
 		final StringTable       st              ,
@@ -436,21 +341,7 @@ public final class XCSV
 		
 		return parse(fileContent, dataType);
 	}
-	
-	public static StringTable readFromFile(final Path file, final char valueSeparator)
-	{
-		return readFromFile(file, XCsvConfiguration.New(valueSeparator));
-	}
-	
-	public static StringTable readFromFile(final Path file, final XCsvConfiguration xcsvConfiguration)
-	{
-		final String fileContent = XIO.unchecked(() ->
-			XIO.readString(file)
-		);
-		
-		return parse(fileContent, xcsvConfiguration);
-	}
-	
+
 
 	
 	///////////////////////////////////////////////////////////////////////////

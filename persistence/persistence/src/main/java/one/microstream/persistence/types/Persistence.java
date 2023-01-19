@@ -701,33 +701,6 @@ public class Persistence
 		// actually, even the crazy sh*t enum sub types with persistent state should be safely handleable.
 		return true;
 
-//		// just in case and to guarantee the correctness of the algorithm below
-//		if(!XReflect.isEnum(enumClass)) // Class#isEnum is bugged!
-//		{
-//			return true;
-//		}
-//
-//		// a "normal", "top level" enum class. No restrictions on their instance fields, so return true
-//		if(enumClass.getSuperclass() == java.lang.Enum.class)
-//		{
-//			return true;
-//		}
-//
-//		// below here is the "dungeon" of crazy sh*t enum subtypes, defined like an anonymous class instance.
-//
-//		// exception to the exception: all fields declared "above" the crazy subtype are unproblematic.
-//		if(field.getDeclaringClass() != enumClass)
-//		{
-//			return true;
-//		}
-//
-//		XDebug.println("Unhandleable enum field: " + enumClass.getName() + "." + field.getName());
-//
-//		/*
-//		 * transient (actually: not persistable) fields are already filtered out before,
-//		 * hence ANY field reaching this point is not handleable.
-//		 */
-//		return false;
 	}
 
 	public static final PersistenceFieldEvaluator defaultFieldEvaluatorEnum()

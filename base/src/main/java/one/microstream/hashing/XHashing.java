@@ -22,7 +22,6 @@ package one.microstream.hashing;
 
 import one.microstream.math.XMath;
 import one.microstream.typing.KeyValue;
-import one.microstream.typing.XTypes;
 
 
 /**
@@ -214,15 +213,6 @@ public final class XHashing
 			}
 		};
 	}
-
-	public static final <E> HashEqualator<E> deriveHashEquality(final Class<E> type)
-	{
-		return XTypes.isValueType(type)
-			? XHashing.<E>hashEqualityValue()
-			: XHashing.<E>hashEqualityIdentity()
-		;
-	}
-
 	
 
 	///////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,6 @@ package one.microstream.functional;
  * #L%
  */
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -54,26 +53,6 @@ public final class XFunc
 		return e -> true;
 	}
 
-	/**
-	 * Functional alias for{@code return true;}.
-	 * @param <T> the type of the input to the predicate
-	 * @return  The predicate denoting any.
-	 */
-	public static final <T> Predicate<T> any()
-	{
-		return all();
-	}
-
-	/**
-	 * Functional alias for {@code return false;}.
-	 * @param <T> the type of the input to the predicate
-	 * @return the none predicate
-	 */
-	public static final <T> Predicate<T> none()
-	{
-		// note on performance: equal to caching an instance in a constant field (lambdas are cached internally)
-		return e -> false;
-	}
 
 	/**
 	 * Functional alias for {@code return e != null;}.
@@ -109,64 +88,6 @@ public final class XFunc
 		// no-op
 	}
 
-	@SafeVarargs
-	public static final <T> Predicate<T> all(final Predicate<? super T>... predicates)
-	{
-		return e ->
-		{
-			for(final Predicate<? super T> predicate : predicates)
-			{
-				if(!predicate.test(e))
-				{
-					return false;
-				}
-			}
-			return true;
-		};
-	}
-	
-	/**
-	 * Required to use lambdas or method reference in conjunction with {@link Predicate#and(Predicate)} etc.
-	 * 
-	 * @param <T> the type of the input to the predicate
-	 * @param predicate a predicate instance
-	 * @return the passed predicate instance without execution any further logic.
-	 */
-	public static final <T> Predicate<T> select(final Predicate<T> predicate)
-	{
-		return predicate;
-	}
-
-	@SafeVarargs
-	public static final <T> Predicate<T> one(final Predicate<? super T>... predicates)
-	{
-		return e ->
-		{
-			final int size = predicates.length;
-			int i = 0;
-			while(i < size)
-			{
-				if(predicates[i++].test(e))
-				{
-					while(i < size)
-					{
-						if(predicates[i++].test(e))
-						{
-							return false;
-						}
-					}
-					return true;
-				}
-			}
-			return false;
-		};
-	}
-
-	public static final <E> Predicate<E> isEqual(final E sample, final Equalator<? super E> equalator)
-	{
-		return new EqualsSample<>(sample, equalator);
-	}
-
 	public static final <T> Predicate<T> isEqualTo(final T subject)
 	{
 		return new Predicate<T>()
@@ -175,18 +96,6 @@ public final class XFunc
 			public boolean test(final T o)
 			{
 				return subject == null ? o == null : subject.equals(o);
-			}
-		};
-	}
-
-	public static final <T> Predicate<T> isSameAs(final T subject)
-	{
-		return new Predicate<T>()
-		{
-			@Override
-			public boolean test(final T o)
-			{
-				return subject == o;
 			}
 		};
 	}
@@ -203,50 +112,6 @@ public final class XFunc
 		};
 	}
 
-	public static Predicate<Object> isInstanceOf(final Class<?> type)
-	{
-		return e ->
-			type.isInstance(e)
-		;
-	}
-	
-	public static Predicate<Object> notIsInstanceOf(final Class<?> type)
-	{
-		return e ->
-			!type.isInstance(e)
-		;
-	}
-	
-	public static final Predicate<Object> isInstanceOf(final Class<?> ... types)
-	{
-		return object ->
-		{
-			for(final Class<?> type : types)
-			{
-				if(type.isInstance(object))
-				{
-					return true;
-				}
-			}
-			return false;
-		};
-	}
-	
-	public static final Predicate<Object> notIsInstanceOf(final Class<?> ... types)
-	{
-		return object ->
-		{
-			for(final Class<?> type : types)
-			{
-				if(type.isInstance(object))
-				{
-					return false;
-				}
-			}
-			return true;
-		};
-	}
-
 	/**
 	 * Fluent alias for {@code predicate.negate()}.
 	 * 
@@ -260,59 +125,6 @@ public final class XFunc
 	}
 
 	// (04.07.2011)TODO in() predicate etc.
-
-	public static final Aggregator<Integer, Integer> max(final int initialValue)
-	{
-		return new XFunc.MaxInteger(initialValue);
-	}
-
-	public static final <E> AggregateCount<E> count()
-	{
-		return new AggregateCount<>();
-	}
-
-	public static final <E, R> Aggregator<E, R> aggregator(
-		final BiConsumer<? super E, ? super R> joiner   ,
-		final R                                aggregate
-	)
-	{
-		return
-			new Aggregator<E, R>()
-			{
-				@Override
-				public void accept(final E element)
-				{
-					joiner.accept(element, aggregate);
-				}
-				
-				@Override
-				public R yield()
-				{
-					return aggregate;
-				}
-			}
-		;
-	}
-
-	public static <E> Aggregator<E, Long> counter()
-	{
-		return new Aggregator<E, Long>()
-		{
-			long count;
-	
-			@Override
-			public void accept(final E element)
-			{
-				this.count++;
-			}
-	
-			@Override
-			public Long yield()
-			{
-				return this.count;
-			}
-		};
-	}
 
 	public static <E> Consumer<E> wrapWithSkip(final Consumer<? super E> target, final long skip)
 	{
@@ -633,27 +445,6 @@ public final class XFunc
 			}
 		};
 	}
-
-	/**
-	 * Pass-through function with type upcast. Can sometimes be required to correctly handle nested types.
-	 * <p>
-	 * Consider the following example with V1 extends V:
-	 * (e.g. V is an interface and V1 is an implementation of V)
-	 * <pre>
-	 * XMap&lt;K, V1&gt; workingCollection = ... ;
-	 * XImmutableMap&lt;K, V&gt; finalCollection = ConstHashTable.NewProjected(input, &lt;K&gt;passthrough(), &lt;V1, V&gt;upcast());
-	 * </pre>
-	 *
-	 * @param <T> the type of the input to the function
-	 * @param <R> the type of the result of the function
-	 * @return the upcast passthrough function
-	 */
-	@SuppressWarnings("unchecked")
-	public static final <T extends R, R> Function<T, R> upcast()
-	{
-		return (Function<T, R>)passThrough();
-	}
-	
 	
 	
 	///////////////////////////////////////////////////////////////////////////
