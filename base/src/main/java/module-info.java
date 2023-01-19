@@ -19,7 +19,6 @@
  */
 module microstream.base
 {
-	exports one.microstream.bytes;
 	exports one.microstream.memory.android;
 	exports one.microstream.hashing;
 	exports one.microstream.util.xcsv;

@@ -30,7 +30,6 @@ import one.microstream.chars.VarString;
 import one.microstream.chars.XChars;
 import one.microstream.chars._charArrayRange;
 import one.microstream.collections.types.XGettingCollection;
-import one.microstream.collections.types.XIterable;
 import one.microstream.exceptions.XCsvException;
 import one.microstream.io.XIO;
 
@@ -213,73 +212,7 @@ public final class XCSV
 	{
 		return 100;
 	}
-	
-	public static final int calculateEstimatedCharCount(final long rowCount)
-	{
-		final long estimate = rowCount * estimatedCharCountPerRow();
-		
-		return estimate >= Integer.MAX_VALUE
-			? Integer.MAX_VALUE
-			: (int)estimate
-		;
-	}
 
-	public static final VarString assembleString(
-		final VarString         vs              ,
-		final StringTable       st              ,
-		final XCsvConfiguration csvConfiguration
-	)
-	{
-		if(st.columnNames().isEmpty())
-		{
-			// column names are mandatory. So no columns means no data, even if there should be rows present.
-			return vs;
-			
-		}
-		
-		final XCsvConfiguration effConfig      = ensureCsvConfiguration(csvConfiguration);
-		final char              valueSeparator = effConfig.valueSeparator();
-		final char              lineSeparator  = effConfig.lineSeparator();
-		final int               vsLength       = vs.length();
-		
-		if(X.isTrue(effConfig.hasControlCharacterDefinitionHeader()))
-		{
-			vs.add(effConfig.buildControlCharactersDefinition(';')).add(lineSeparator);
-		}
-		
-		// assemble column names if not suppressed
-		if(X.isNotFalse(effConfig.hasColumnNamesHeader()))
-		{
-			assemble(vs, valueSeparator, st.columnNames()).add(lineSeparator);
-		}
-		
-		// assemble column types if present (and not suppressed)
-		if(X.isNotFalse(effConfig.hasColumnTypesHeader()) && !st.columnTypes().isEmpty())
-		{
-			vs.add(effConfig.headerStarter());
-			assemble(vs, valueSeparator, st.columnTypes());
-			vs.add(effConfig.headerTerminator()).add(lineSeparator);
-		}
-
-		// assemble data rows if present
-		if(!st.rows().isEmpty())
-		{
-			for(final String[] row : st.rows())
-			{
-				assemble(vs, valueSeparator, row);
-				vs.add(lineSeparator);
-			}
-		}
-		
-		// any of the 4 elements adds a trailing lineSeparator at the end which must be deleted
-		if(vs.length() != vsLength)
-		{
-			vs.deleteLast();
-		}
-
-		return vs;
-	}
-	
 	private static void assemble(final VarString vs, final char separator, final String[] elements)
 	{
 		if(elements.length == 0)

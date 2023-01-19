@@ -35,7 +35,6 @@ import one.microstream.X;
 import one.microstream.chars.VarString;
 import one.microstream.collections.EqHashTable;
 import one.microstream.math.XMath;
-import one.microstream.typing.KeyValue;
 import one.microstream.util.BundleInfo;
 
 /**
@@ -175,31 +174,6 @@ public final class Logging
 				return String.valueOf(supplier.get());
 			}
 		};
-	}
-		
-	/**
-	 * Creates an Object to String converter, which only includes a limited amount of elements
-	 * in the resulting String, if {@link Iterable}s or arrays are to be converted.
-	 * <p>
-	 * For all other object's the supplied <code>toStringConverter</code> will be used.
-	 * <p>
-	 * For example, a {@link List} of {@link Integer}s from 1 to 100, and a limit of 3,
-	 * will result in a {@link String} like this:<br>
-	 * <code>"[1, 2, 3, ...]"</code>
-	 * 
-	 * @param limit maximum amount of converted elements in {@link Iterable}s and arrays
-	 * @param toStringConverter the converter for all other objects
-	 * @return the new Object to String converter
-	 */
-	public static Function<Object, String> LimitedElementsToStringConverter(
-		final int                      limit            ,
-		final Function<Object, String> toStringConverter
-	)
-	{
-		return LimitedElementsToStringConverter(
-			obj -> limit     ,
-			toStringConverter
-		);
 	}
 	
 	/**

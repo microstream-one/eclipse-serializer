@@ -450,7 +450,9 @@ public final class JdkInternals
 			return false;
 		}
 
-		// at least secure this call externally against race conditions if the geniuses can't do it internally
+		// at least secure this call externally against race conditions
+		// Synchronized on local variable, but when 2 threads try deallocate the same object they
+		// Don't run simultanous
 		synchronized(cleanerThunkDeallocatorRunnable)
 		{
 			((Runnable)cleanerThunkDeallocatorRunnable).run();

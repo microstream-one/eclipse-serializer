@@ -20,33 +20,12 @@ package one.microstream.time;
  * #L%
  */
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public final class XTime
 {
-	///////////////////////////////////////////////////////////////////////////
-	// constants //
-	//////////////
-	
-	private static final int
-		MIN_MONTH        =   1,
-		MIN_DAY_IN_MONTH =   1,
-		MIN_HOUR         =   0,
-		MIN_MINUTE       =   0,
-		MIN_SECOND       =   0,
-		MIN_MILLI        =   0,
-		MAX_MONTH        =  12,
-		MAX_DAY_IN_MONTH =  31,
-		MAX_HOUR         =  23,
-		MAX_MINUTE       =  59,
-		MAX_SECOND       =  59,
-		MAX_MILLI        = 999
-	;
-	
-	
 	
 	/**
 	 * Short-cut for {@code new Date(System.currentTimeMillis())}.

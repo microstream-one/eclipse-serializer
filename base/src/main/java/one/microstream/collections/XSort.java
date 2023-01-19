@@ -328,24 +328,6 @@ public final class XSort
 		dualPivotQuicksort(values, 0, values.length - 1);
 	}
 
-	/**
-	 * Sorts the indicated range of the passed values array.
-	 * <p>
-	 * Example: {@code sort(myValues, 0, 5} sorts the first 5 values of array
-	 * {@code myElements} (indices 0 to 4).
-	 * <p>
-	 *
-	 * @param values the values to be sorted.
-	 * @param start the starting index (inclusive) of the subrange to be sorted.
-	 * @param bound the bounding index (exclusive) of the subrange to be sorted.
-	 */
-	public static final void sort(final int[] values, final int start, final int bound)
-		throws NullPointerException, ArrayIndexOutOfBoundsException
-	{
-		checkRange(values, start, bound);
-		dualPivotQuicksort(values, start, bound - 1);
-	}
-
 
 	///////////////////////////////////////////////////////////////////////////
 	// Quicksort //

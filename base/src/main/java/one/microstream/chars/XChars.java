@@ -23,8 +23,6 @@ package one.microstream.chars;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.StringTokenizer;
-import java.util.function.Consumer;
 
 import one.microstream.branching.ThrowBreak;
 import one.microstream.functional._charPredicate;
@@ -46,13 +44,9 @@ public final class XChars
 	// CHECKSTYLE.OFF: MagicNumber: The 1E7 is virtually already a constant.
 	static final transient char[]
 		CHARS_MIN_VALUE_byte    = Integer.toString(Byte.MIN_VALUE)          .toCharArray(),
-		CHARS_MAX_VALUE_byte    = Integer.toString(Byte.MAX_VALUE)          .toCharArray(),
 		CHARS_MIN_VALUE_short   = Integer.toString(Short.MIN_VALUE)         .toCharArray(),
-		CHARS_MAX_VALUE_short   = Integer.toString(Short.MAX_VALUE)         .toCharArray(),
 		CHARS_MIN_VALUE_int     = Integer.toString(Integer.MIN_VALUE)       .toCharArray(),
-		CHARS_MAX_VALUE_int     = Integer.toString(Integer.MAX_VALUE)       .toCharArray(),
 		CHARS_MIN_VALUE_long    = Long   .toString(Long.MIN_VALUE)          .toCharArray(),
-		CHARS_MAX_VALUE_long    = Long   .toString(Long.MAX_VALUE)          .toCharArray(),
 		CHARS_ZERO              = Double .toString(0.0)                     .toCharArray(),
 		CHARS_ONE               = Double .toString(1.0)                     .toCharArray(),
 		CHARS_NAN               = Double .toString(Double.NaN)              .toCharArray(),
@@ -72,11 +66,6 @@ public final class XChars
 		// no reasonable way was found to derive floating point max string length programmatically, hence manual
 		MAX_CHAR_COUNT_float          = 15, // 1 minus, 1 dot,  9 IEEE754 standard digits, 1 E, 1 minus, 2 exponent
 		MAX_CHAR_COUNT_double         = 24, // 1 minus, 1 dot, 17 IEEE754 standard digits, 1 E, 1 minus, 3 exponent
-
-		SIGNLESS_MAX_CHAR_COUNT_byte  = CHARS_MAX_VALUE_byte .length,
-		SIGNLESS_MAX_CHAR_COUNT_short = CHARS_MAX_VALUE_short.length,
-		SIGNLESS_MAX_CHAR_COUNT_int   = CHARS_MAX_VALUE_int  .length,
-		SIGNLESS_MAX_CHAR_COUNT_long  = CHARS_MAX_VALUE_long .length,
 
 		LITERAL_LENGTH_NULL           = 4,
 		LITERAL_LENGTH_TRUE           = 4,
@@ -190,17 +179,6 @@ public final class XChars
 	public static final boolean isNonWhitespace(final char c)
 	{
 		return c >= LOWEST_NON_WHITESPACE;
-	}
-
-	/**
-	 * Arbitrary threshold of 1000 to discriminate "short" strings from "long" strings.<br>
-	 * The rationale behind that is that "short" strings usually allow for simpler and faster algorithms,
-	 * which become inefficient on larger strings. For example a two-pass processing of a splitting algorithm.
-	 * @return 1000
-	 */
-	public static final int shortStringLength()
-	{
-		return 1000;
 	}
 
 	/**
@@ -768,46 +746,6 @@ public final class XChars
 		return cs == null || cs.length() == 0;
 	}
 
-	public static final void iterate(final CharSequence chars, final _charProcedure iterator)
-	{
-		// optimization checks
-		if(chars instanceof String)
-		{
-			iterate((String)chars, iterator);
-			return;
-		}
-		if(chars instanceof VarString)
-		{
-			((VarString)chars).iterate(iterator);
-			return;
-		}
-		// could add JDK string builder implementations here
-
-		// generic default algorithm. However slow that may be for implementation of chars
-		try
-		{
-			final int length = chars.length();
-			for(int i = 0; i < length; i++)
-			{
-				iterator.accept(chars.charAt(i));
-			}
-		}
-		catch(final ThrowBreak b)
-		{
-			// abort iteration
-		}
-	}
-
-	public static final void iterate(final String chars, final _charProcedure iterator)
-	{
-		iterate(readChars(chars), iterator);
-	}
-
-	public static final void iterate(final char[] chars, final _charProcedure iterator)
-	{
-		iterate(chars, 0, chars.length, iterator);
-	}
-
 	public static final void iterate(
 		final char[]         chars   ,
 		final int            offset  ,
@@ -947,166 +885,6 @@ public final class XChars
 		 */
 		return s.toCharArray();
 	}
-
-
-	public static <C extends Consumer<? super String>> C splitSimple(
-		final String s        ,
-		final String separator,
-		final C      collector
-	)
-	{
-		final StringTokenizer pathTokenizer = new StringTokenizer(s, separator);
-
-		// the StringTokenizer discards leading separators. This is the manual workaround
-		if(s.startsWith(separator))
-		{
-			collector.accept("");
-		}
-
-		while(pathTokenizer.hasMoreTokens())
-		{
-			final String token = pathTokenizer.nextToken();
-			collector.accept(token);
-		}
-
-		return collector;
-	}
-
-	/**
-	 * Creates a {@link String} instance with trimmed content directly from a character sequence without
-	 * unnecessary intermediate instances.
-	 *
-	 * @param input the source char array to trim
-	 * @param lowerOffset the start offset
-	 * @param length the length
-	 * @return the trimmed String
-	 */
-	public static final String trimToString(final char[] input, final int lowerOffset, final int length)
-	{
-		if(length <= 0)
-		{
-			if(length < 0)
-			{
-				throw new one.microstream.meta.NotImplementedYetError(); // FIXME XChars#trimToString() negative length
-			}
-			return ""; // prefer efficiency over referential uniqueness
-		}
-
-		final int bound = lowerOffset + length;
-		int low = lowerOffset;
-		while(low < bound && XChars.isWhitespace(input[low]))
-		{
-			low++;
-		}
-
-		if(low >= lowerOffset + length)
-		{
-			return ""; // prefer efficiency over referential uniqueness
-		}
-
-		int upper = lowerOffset + length - 1;
-		while(XChars.isWhitespace(input[upper]))
-		{
-			upper--;
-		}
-
-		return new String(input, low, upper - low + 1);
-	}
-
-	/**
-	 * Special case higher performance implementation of decimal integer literal parsing.
-	 * Because as usual, the JDK implementation strategies are not acceptable when dealing with non-trivial
-	 * amounts of data.
-	 * Properly executed performance tests (large loop sizes, averages, nanosecond precision, etc.) showed
-	 * that this algorithms is more than twice as fast as the one used in JDK
-	 * (average of ~33µs vs ~75µs for long literals on same machine with measuring overhead of ~1.5µs)
-	 *
-	 * @param input the source char array
-	 * @param offset the start offset
-	 * @param length the length
-	 * @return the parsed long value
-	 */
-	public static final long internalParse_longLiteral(final char[] input, final int offset, final int length)
-	{
-		// special cased trivial case and invalid single character cases (like letter or sole '+')
-		if(length == 1)
-		{
-			return to_int(input[offset]);
-		}
-
-		int i;
-		final int bound = (i = offset) + length;
-
-		// handle sign
-		final boolean negative;
-		if((negative = input[i] == '-') || input[i] == '+')
-		{
-			/*
-			 * Special case handling of asymmetric min value
-			 * Note that the char array comparison is done in only very rare cases and aborts quickly on mismatch.
-			 */
-			if(length == CHARS_MIN_VALUE_long.length && uncheckedEquals(input, offset, CHARS_MIN_VALUE_long, 0, length))
-			{
-				return Long.MIN_VALUE;
-			}
-			i++;
-		}
-
-		// actual value parsing (quite trivial and efficient if done properly)
-		long value = 0;
-		while(i < bound)
-		{
-			value = value * DECIMAL_BASE + to_int(input[i++]);
-		}
-
-		// adjust sign and return resulting value
-		return negative ? -value : value;
-	}
-
-	/**
-	 * Two number literals of equal length can efficiently compared to each other by comparing the digits
-	 * from most significant to less significant place. The first pair of digits determines the result.
-	 * As every decimal digit has a 90% chance of being differen to another decimal digit when comparing random
-	 * numbers, this algorithm terminates very quickly in the common case. The worst case (equal value literals) is
-	 * a usual full equality check to the last digit.
-	 *
-	 */
-	static final boolean isNumericalLessThan(
-		final char[] chars1 ,
-		final int    offset1,
-		final char[] chars2 ,
-		final int    offset2,
-		final int    length
-	)
-	{
-		for(int i = 0; i < length; i++)
-		{
-			if(chars1[offset1 + i] != chars2[offset2 + i])
-			{
-				// not equal must either be less or greater than
-				if(chars1[offset1 + i] < chars2[offset2 + i])
-				{
-					return true;
-				}
-
-				// greater it is, return false
-				return false;
-			}
-		}
-
-		// completely equal, so not less, hence return false
-		return false;
-	}
-
-	public static final int to_int(final char digit)
-	{
-		if(digit < DIGIT_LOWER_INDEX || digit >= DIGIT_UPPER_BOUND)
-		{
-			throw new NumberFormatException(String.valueOf(digit));
-		}
-		return digit - DIGIT_LOWER_INDEX;
-	}
-
 
 	public static final boolean contains(final String s, final char c)
 	{

@@ -722,36 +722,11 @@ public final class XMemory
 	// transformative byte array primitive value setters //
 
 
-	public static final void set_shortInBytes(final byte[] bytes, final int index, final short value)
-	{
-		MEMORY_ACCESSOR.set_shortInBytes(bytes, index, value);
-	}
-
-	public static final void set_charInBytes(final byte[] bytes, final int index, final char value)
-	{
-		MEMORY_ACCESSOR.set_charInBytes(bytes, index, value);
-	}
 
 	public static final void set_intInBytes(final byte[] bytes, final int index, final int value)
 	{
 		MEMORY_ACCESSOR.set_intInBytes(bytes, index, value);
 	}
-
-	public static final void set_floatInBytes(final byte[] bytes, final int index, final float value)
-	{
-		MEMORY_ACCESSOR.set_floatInBytes(bytes, index, value);
-	}
-
-	public static final void set_longInBytes(final byte[] bytes, final int index, final long value)
-	{
-		MEMORY_ACCESSOR.set_longInBytes(bytes, index, value);
-	}
-
-	public static final void set_doubleInBytes(final byte[] bytes, final int index, final double value)
-	{
-		MEMORY_ACCESSOR.set_doubleInBytes(bytes, index, value);
-	}
-
 
 
 	// generic variable-length range copying //

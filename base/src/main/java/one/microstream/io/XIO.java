@@ -498,26 +498,6 @@ public final class XIO
 	}
 	
 	/**
-	 * Writes the contents of the array to the file.
-	 * <p>
-	 * <b>Attention:</b> Internally this method opens a new FileChannel to operate on!
-	 * 
-	 * @param file the file to write to
-	 * @param bytes the bytes to write
-	 * @return number of actual written bytes
-	 * @throws IOException if an IO error occurs
-	 */
-	public static final long write(final Path file, final byte[] bytes)
-		throws IOException
-	{
-		final ByteBuffer dbb = XIO.wrapInDirectByteBuffer(bytes);
-		final long writeCount = write(file, dbb);
-		XMemory.deallocateDirectByteBuffer(dbb);
-		
-		return writeCount;
-	}
-	
-	/**
 	 * Writes the contents of the buffer to the file.
 	 * <p>
 	 * <b>Attention:</b> Internally this method opens a new FileChannel to operate on!

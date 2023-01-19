@@ -22,9 +22,7 @@ package one.microstream;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import one.microstream.branching.AbstractBranchingThrow;
 import one.microstream.branching.ThrowBreak;
@@ -36,7 +34,6 @@ import one.microstream.collections.EmptyTable;
 import one.microstream.collections.HashEnum;
 import one.microstream.collections.Singleton;
 import one.microstream.collections.interfaces.Sized;
-import one.microstream.collections.old.AbstractBridgeXList;
 import one.microstream.collections.types.XGettingCollection;
 import one.microstream.collections.types.XList;
 import one.microstream.collections.types.XReference;
