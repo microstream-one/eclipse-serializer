@@ -16,4 +16,16 @@
     <modules>
         <module>integration</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>from_java_17</id>
+            <activation>
+                <jdk>[17,)</jdk>
+            </activation>
+            <modules>
+                <module>integration-jdk17</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

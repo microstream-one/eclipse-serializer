@@ -26,7 +26,7 @@ import one.microstream.tests.integration.data.TestSerializationDataProvider;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
-public class TestDeepCopy {
+public class DeepCopyTest {
 
     @ParameterizedTest
     @ArgumentsSource(TestSerializationDataProvider.class)

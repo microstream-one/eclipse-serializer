@@ -20,10 +20,11 @@ package one.microstream.tests.integration;
  * #L%
  */
 
+import one.microstream.persistence.binary.jdk8.types.BinaryHandlersJDK8;
 import one.microstream.persistence.binary.serializer.Serializer;
 import one.microstream.persistence.binary.serializer.SerializerFoundation;
 import one.microstream.tests.integration.data.TestSerializationData;
-import one.microstream.tests.integration.data.TestSerializationDataProvider;
+import one.microstream.tests.integration.data.TestSerializationDataProviderJDK8;
 import one.microstream.tests.integration.util.PrettyPrint;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,12 +36,16 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
-public class TestSerialization {
+/**
+ * Testing The JDK8 Binary Handlers
+ */
+public class SerializationJDK8Test {
 
     @ParameterizedTest
-    @ArgumentsSource(TestSerializationDataProvider.class)
+    @ArgumentsSource(TestSerializationDataProviderJDK8.class)
     void testSerialization(TestSerializationData serializationData) {
         SerializerFoundation<?> foundation = SerializerFoundation.New();
+        BinaryHandlersJDK8.registerJDK8TypeHandlers(foundation);
 
         byte[] bytes;
 
@@ -51,25 +56,22 @@ public class TestSerialization {
             URL url = getClass().getClassLoader().getResource(serializationData.getFileName());
             Assertions.assertThat(url).as(String.format("Cannot find file %s within classpath", serializationData.getFileName())).isNotNull();
 
-            if (!"IdentityHashMap.test.txt".equals(serializationData.getFileName())) {
-                // The binary output is not unique for a IdentityHashMap with the same entries
-                // So we only tst restored instance equality later on in the method
 
-                List<String> result = Files.readAllLines(Paths.get(url.toURI()));
+            List<String> result = Files.readAllLines(Paths.get(url.toURI()));
 
-                String encodedBytes = Base64.getEncoder().encodeToString(bytes);
+            String encodedBytes = Base64.getEncoder().encodeToString(bytes);
 
-                String encodedExpected = result.get(0);
+            String encodedExpected = result.get(0);
 
-                if (!encodedBytes.equals(encodedExpected)) {
-                    System.out.printf("Difference in binary output for type: %s%n", serializationData.getInstance().getClass().getName());
-                    System.out.println("Expected");
-                    result.stream().skip(2).forEach(System.out::println);
-                    System.out.println("Found");
-                    System.out.println(PrettyPrint.bytesToHex(bytes));
-                }
-                Assertions.assertThat(encodedBytes).isEqualTo(encodedExpected);
+            if (!encodedBytes.equals(encodedExpected)) {
+                System.out.printf("Difference in binary output for type: %s%n", serializationData.getInstance().getClass().getName());
+                System.out.println("Expected");
+                result.stream().skip(2).forEach(System.out::println);
+                System.out.println("Found");
+                System.out.println(PrettyPrint.bytesToHex(bytes));
             }
+            Assertions.assertThat(encodedBytes).isEqualTo(encodedExpected);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
