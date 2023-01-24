@@ -20,9 +20,7 @@ package one.microstream.tests.integration.data;
  * #L%
  */
 
-import one.microstream.tests.integration.model.Address;
-import one.microstream.tests.integration.model.Employee;
-import one.microstream.tests.integration.model.Person;
+import one.microstream.tests.model.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
@@ -115,10 +113,19 @@ public class TestSerializationDataProvider implements ArgumentsProvider {
                 , Arguments.of(new TestSerializationData(testConcurrentSkipListMap(), "ConcurrentSkipListMap.test.txt", defaultCompare))
                 , Arguments.of(new TestSerializationData(testConcurrentSkipListSet(), "ConcurrentSkipListSet.test.txt", defaultCompare))
                 , Arguments.of(new TestSerializationData(testProperties(), "Properties.test.txt", defaultCompare))
+                , Arguments.of(new TestSerializationData(testItem(), "Enum.test.txt", defaultCompare))
                 , Arguments.of(new TestSerializationData(createCircular(), "circular.test.txt", defaultCompare))
                 , Arguments.of(new TestSerializationData(createObjectGraph(), "objectGraph.test.txt", defaultCompare))
                 , Arguments.of(new TestSerializationData(testAddress(), "pojo.test.txt", defaultCompare))
         );
+    }
+
+    private Item testItem() {
+        Item result = new Item();
+        result.setName("Coat");
+        result.setSeason(Season.WINTER);
+        return result;
+
     }
 
     private Properties testProperties() {

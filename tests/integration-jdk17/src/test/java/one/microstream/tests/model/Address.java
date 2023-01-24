@@ -1,4 +1,4 @@
-package one.microstream.tests.integration.model;
+package one.microstream.tests.model;
 
 /*-
  * #%L
@@ -28,6 +28,10 @@ public class Address {
     private String street;
     private String city;
     private String postalCode;
+
+    public Address() {
+        // Used by the RestructuringTest, not needed for standard deserialization.
+    }
 
     public Address(long id, String street, String city, String postalCode) {
         this.id = id;

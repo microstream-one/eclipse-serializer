@@ -19,5 +19,5 @@ See also https://microstream.atlassian.net/wiki/spaces/MSG/pages/2113568769/Init
 Run only the integration tests
 
 ```
-mvn clean verify -rf :integration
+mvn clean verify -f tests/pom.xml
 ```

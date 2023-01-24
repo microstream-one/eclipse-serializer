@@ -1,4 +1,4 @@
-package one.microstream.tests.integration.model;
+package one.microstream.tests.model;
 
 /*-
  * #%L
@@ -20,23 +20,21 @@ package one.microstream.tests.integration.model;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
-public class Employee {
+public class Person {
 
     private long id;
     private String name;
-    private final List<Employee> employees = new ArrayList<>();
-    private Employee manager;
+    private int age;
+    private Address address;
 
-    public Employee(long id, String name) {
+
+    public Person(long id, String name, int age, Address address) {
         this.id = id;
         this.name = name;
-
+        this.age = age;
+        this.address = address;
     }
 
     public long getId() {
@@ -55,17 +53,20 @@ public class Employee {
         this.name = name;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public int getAge() {
+        return age;
     }
 
-    public Employee getManager() {
-        return manager;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public void setManager(Employee manager) {
-        this.manager = manager;
-        manager.getEmployees().add(this);
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override
@@ -77,34 +78,36 @@ public class Employee {
             return false;
         }
 
-        Employee employee = (Employee) o;
+        Person person = (Person) o;
 
-        if (!name.equals(employee.name)) {
+        if (id != person.id) {
             return false;
         }
-        String thisEmployeeNames = employees.stream().map(Employee::getName).collect(Collectors.joining(", "));
-        String thatEmployeeNames = employee.employees.stream().map(Employee::getName).collect(Collectors.joining(", "));
-        if (!thisEmployeeNames.equals(thatEmployeeNames)) {
+        if (age != person.age) {
             return false;
         }
-        return Objects.equals(manager, employee.manager);
+        if (!name.equals(person.name)) {
+            return false;
+        }
+        return address.equals(person.address);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + employees.hashCode();
-        result = 31 * result + (manager != null ? manager.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + name.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + address.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Employee.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Person.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("name='" + name + "'")
-                .add("manager = '" + (manager == null ? " - " : manager.getName()) + "'")
-                .add("directReports = '" + employees.stream().map(Employee::getName).collect(Collectors.joining(" - ")) + "'")
+                .add("age=" + age)
+                .add("address=" + address)
                 .toString();
     }
 }

@@ -20,7 +20,7 @@ package one.microstream.tests.integration.data;
  * #L%
  */
 
-import one.microstream.tests.integration.model.Employee;
+import one.microstream.tests.model.Employee;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
