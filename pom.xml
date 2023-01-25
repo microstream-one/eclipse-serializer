@@ -48,6 +48,7 @@
 		<module>persistence</module>
 		<module>serializer</module>
         <module>tests</module>
+		<module>docu</module>
 	</modules>
 	
 	<dependencyManagement>

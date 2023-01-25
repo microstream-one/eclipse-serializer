@@ -21,3 +21,10 @@ Run only the integration tests
 ```
 mvn clean verify -f tests/pom.xml
 ```
+
+Build only the Documentation PDF
+
+```
+mvn generate-resources -pl :documentation
+```
+
