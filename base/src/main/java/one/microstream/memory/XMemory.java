@@ -46,8 +46,8 @@ public final class XMemory
 	// constants //
 	//////////////
 
-	static MemoryAccessor       MEMORY_ACCESSOR         ;
-	static MemoryAccessor       MEMORY_ACCESSOR_REVERSED;
+	public static MemoryAccessor       MEMORY_ACCESSOR         ;
+	public static MemoryAccessor       MEMORY_ACCESSOR_REVERSED;
 	static MemorySizeProperties MEMORY_SIZE_PROPERTIES  ;
 
 	static
@@ -928,6 +928,20 @@ public final class XMemory
 		return bytes;
 	}
 
+	// Not used within Serializer, only in persister. Kept together with other same named mathods.
+	public static final byte[] toArray(final ByteBuffer source, final int position, final int length)
+	{
+		final long plState = getPositionLimit(source);
+		setPositionLimit(source, position, position + length);
+
+		final byte[] bytes = new byte[length];
+		source.get(bytes, 0, length);
+
+		// why would a querying methode intrinsically increase the position? WHY?
+		setPositionLimit(source, plState);
+
+		return bytes;
+	}
 
 	public static final byte[] toArray(final ByteBuffer[] sources)
 	{

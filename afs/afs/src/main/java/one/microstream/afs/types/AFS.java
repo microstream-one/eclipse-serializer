@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class AFS {
+public final class AFS {
     public static XGettingEnum<AItem> listItems(
             final ADirectory directory,
             final Predicate<? super AItem> selector

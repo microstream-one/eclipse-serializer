@@ -27,17 +27,6 @@ import one.microstream.util.BufferSizeProviderIncremental;
 
 public interface PersistenceStorer extends Storer
 {
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public PersistenceStorer initialize();
-//
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public PersistenceStorer initialize(long initialCapacity);
 
 	/**
 	 * {@inheritDoc}

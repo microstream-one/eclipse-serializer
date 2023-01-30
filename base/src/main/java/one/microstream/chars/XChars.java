@@ -21,12 +21,14 @@ package one.microstream.chars;
  */
 
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import one.microstream.branching.ThrowBreak;
 import one.microstream.functional._charPredicate;
 import one.microstream.functional._charProcedure;
+import one.microstream.memory.XMemory;
 import one.microstream.typing.XTypes;
 
 
@@ -42,7 +44,7 @@ public final class XChars
 
 	// CHECKSTYLE.OFF: ConstantName: type names are intentionally unchanged
 	// CHECKSTYLE.OFF: MagicNumber: The 1E7 is virtually already a constant.
-	static final transient char[]
+	public static final transient char[]
 		CHARS_MIN_VALUE_byte    = Integer.toString(Byte.MIN_VALUE)          .toCharArray(),
 		CHARS_MIN_VALUE_short   = Integer.toString(Short.MIN_VALUE)         .toCharArray(),
 		CHARS_MIN_VALUE_int     = Integer.toString(Integer.MIN_VALUE)       .toCharArray(),
@@ -74,7 +76,7 @@ public final class XChars
 
 	// CHECKSTYLE.ON: ConstantName
 
-	static final transient char
+	public static final transient char
 		DIGIT_LOWER_INDEX = '0'    , // for using " >= " and "<"
 		DIGIT_UPPER_BOUND = '9' + 1  // for using " >= " and "<"
 	;
@@ -86,7 +88,7 @@ public final class XChars
 	 */
 	static final transient int DECIMAL_CHAR_TABLES_LENGTH = 100;
 
-	static final transient int DECIMAL_BASE               =  10;
+	public static final transient int DECIMAL_BASE        =  10;
 
 	/*
 	 * Character table containing the ten digit of each number between 00 and 99.
@@ -102,7 +104,7 @@ public final class XChars
 	 * '8', '8', '8', '8', '8', '8', '8', '8', '8', '8',
 	 * '9', '9', '9', '9', '9', '9', '9', '9', '9', '9',
 	 */
-	static final transient char[] DECIMAL_CHAR_TABLE_10S = new char[DECIMAL_CHAR_TABLES_LENGTH];
+	public static final transient char[] DECIMAL_CHAR_TABLE_10S = new char[DECIMAL_CHAR_TABLES_LENGTH];
 
 	/*
 	 * Character table containing the one digit of each number between 00 and 99.
@@ -118,7 +120,7 @@ public final class XChars
 	 * '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	 * '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 	 */
-	static final transient char[] DECIMAL_CHAR_TABLE_01S = new char[DECIMAL_CHAR_TABLES_LENGTH];
+	public static final transient char[] DECIMAL_CHAR_TABLE_01S = new char[DECIMAL_CHAR_TABLES_LENGTH];
 
 	// decimal tables initialization
 	static
@@ -256,7 +258,7 @@ public final class XChars
 		return true;
 	}
 
-	static final boolean uncheckedEquals(
+	public static final boolean uncheckedEquals(
 		final char[] chars1 ,
 		final int    offset1,
 		final char[] chars2 ,
@@ -725,6 +727,24 @@ public final class XChars
 			}
 		}
 		return len;
+	}
+
+	// Not used within Serializer, only in persister. Kept together with other same named mathods.
+	public static final String String(final ByteBuffer chars, final Charset charset)
+	{
+		return new String(XMemory.toArray(chars), charset);
+	}
+
+	// Not used within Serializer, only in persister. Kept together with other same named mathods.
+	public static final String String(final int value)
+	{
+		// performance-optimized version with minimal instantiating and pointer indirection
+		final char[] chars;
+		return new String(
+				chars = new char[MAX_CHAR_COUNT_int],
+				0,
+				CharConversionIntegers.put_int(value, chars, 0)
+		);
 	}
 
 	public static final String String(final byte[] bytes, Charset charset) {

@@ -556,7 +556,24 @@ public final class XIO
 	{
 		return writeToChannel(fileChannel, buffer);
 	}
-	
+
+	// Not used within Serializer, needed in Persister. But since it uses writeToChannel we need it here!
+	public static final long write(
+			final FileChannel                    fileChannel,
+			final Iterable<? extends ByteBuffer> buffers
+	)
+			throws IOException
+	{
+		long writeCount = 0;
+
+		for(final ByteBuffer buffer : buffers)
+		{
+			writeCount += writeToChannel(fileChannel, buffer);
+		}
+
+		return writeCount;
+	}
+
 
 	private static long writeToChannel(
 		final FileChannel fileChannel,
@@ -640,7 +657,18 @@ public final class XIO
 		
 		return internalRead(fileChannel, targetBuffer, filePosition, length);
 	}
-	
+
+	// Not used within Serializer, needed in Persister. But since it uses internalRead we need it here!
+	public static long read(
+			final FileChannel fileChannel ,
+			final ByteBuffer  targetBuffer,
+			final long        filePosition
+	)
+			throws IOException
+	{
+		return internalRead(fileChannel, targetBuffer, filePosition, targetBuffer.remaining());
+	}
+
 	private static long internalRead(
 		final FileChannel fileChannel ,
 		final ByteBuffer  targetBuffer,

@@ -64,7 +64,7 @@ public class PersistenceTypeDictionaryFileHandler implements PersistenceTypeDict
 			{
 				final ByteBuffer bb = rFile.readBytes();
 				
-				return XChars.String(bb.array(), Persistence.standardCharset());
+				return XChars.String(bb, Persistence.standardCharset());
 			}
 			finally
 			{
