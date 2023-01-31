@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence.binary.android
+module org.eclipse.microstream.serializer.persistence.binary.android
 {
-	exports one.microstream.persistence.binary.android.types;
-	exports one.microstream.persistence.binary.android.java.time;
-	
-	requires transitive microstream.persistence.binary;
+	exports org.eclipse.microstream.serializer.persistence.binary.android.types;
+	exports org.eclipse.microstream.serializer.persistence.binary.android.java.time;
+
+	requires transitive org.eclipse.microstream.serializer.persistence.binary;
 }

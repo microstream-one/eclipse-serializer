@@ -5,22 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-afs-parent</artifactId>
-		<version>1.0.eclipse-SNAPSHOT</version>
+		<groupId>org.eclipse.microstream.serializer</groupId>
+		<artifactId>microstream-serializer-afs-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-afs</artifactId>
+	<artifactId>microstream-serializer-afs</artifactId>
 	
 	<name>MicroStream Abstract File System</name>
 	<description>Abstract File System Implementation</description>
 	
 	<dependencies>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-base</artifactId>
-			<version>1.0.eclipse-SNAPSHOT</version>
+			<groupId>org.eclipse.microstream.serializer</groupId>
+			<artifactId>microstream-serializer-base</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	

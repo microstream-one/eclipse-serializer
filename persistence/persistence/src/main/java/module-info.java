@@ -17,11 +17,11 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence
+module org.eclipse.microstream.serializer.persistence
 {
-	exports one.microstream.persistence.exceptions;
-	exports one.microstream.persistence.types;
-	exports one.microstream.persistence.internal;
+	exports org.eclipse.microstream.serializer.persistence.exceptions;
+	exports org.eclipse.microstream.serializer.persistence.types;
+	exports org.eclipse.microstream.serializer.persistence.internal;
 	
-	requires transitive microstream.afs;
+	requires transitive org.eclipse.microstream.serializer.afs;
 }

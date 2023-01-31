@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence.binary.jdk8
+module org.eclipse.microstream.serializer.persistence.binary.jdk8
 {
-	exports one.microstream.persistence.binary.jdk8.types;
-	exports one.microstream.persistence.binary.jdk8.java.util;
-	
-	requires transitive microstream.persistence.binary;
+	exports org.eclipse.microstream.serializer.persistence.binary.jdk8.types;
+	exports org.eclipse.microstream.serializer.persistence.binary.jdk8.java.util;
+
+	requires transitive org.eclipse.microstream.serializer.persistence.binary;
 }

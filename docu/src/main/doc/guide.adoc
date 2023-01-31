@@ -29,7 +29,7 @@ FIXME ??? Use final artifact name and version number
 [pom.xml]
 ----
     <dependency>
-        <groupId>one.microstream</groupId>
+        <groupId>org.eclipse.microstream.serializer</groupId>
         <artifactId>microstream-serializer</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -40,8 +40,8 @@ If you want to make use of the special binary handlers (see further), you can ad
 [pom.xml]
 ----
     <dependency>
-        <groupId>one.microstream</groupId>
-        <artifactId>microstream-persistence-binary-jdk8</artifactId>
+        <groupId>org.eclipse.microstream.serializer</groupId>
+        <artifactId>microstream-serializer-persistence-binary-jdk8</artifactId>
         <version>1.0.0</version>
     </dependency>
 ----
@@ -49,8 +49,8 @@ If you want to make use of the special binary handlers (see further), you can ad
 [pom.xml]
 ----
     <dependency>
-        <groupId>one.microstream</groupId>
-        <artifactId>microstream-persistence-binary-jdk17</artifactId>
+        <groupId>org.eclipse.microstream.serializer</groupId>
+        <artifactId>microstream-serializer-persistence-binary-jdk17</artifactId>
         <version>1.0.0</version>
     </dependency>
 ----

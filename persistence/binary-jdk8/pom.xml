@@ -5,22 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-persistence-parent</artifactId>
-		<version>1.0.eclipse-SNAPSHOT</version>
+		<groupId>org.eclipse.microstream.serializer</groupId>
+		<artifactId>microstream-serializer-persistence-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-persistence-binary-jdk8</artifactId>
+	<artifactId>microstream-serializer-persistence-binary-jdk8</artifactId>
 	
 	<name>MicroStream Persistence JDK8</name>
 	<description>MicroStream Persistence Specialized Type Handlers</description>
 	
 	<dependencies>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-persistence-binary</artifactId>
-			<version>1.0.eclipse-SNAPSHOT</version>
+			<groupId>org.eclipse.microstream.serializer</groupId>
+			<artifactId>microstream-serializer-persistence-binary</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	

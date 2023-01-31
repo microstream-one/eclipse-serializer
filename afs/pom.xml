@@ -7,13 +7,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-parent</artifactId>
-		<version>1.0.eclipse-SNAPSHOT</version>
+		<groupId>org.eclipse.microstream.serializer</groupId>
+		<artifactId>microstream-serializer-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-afs-parent</artifactId>
+	<artifactId>microstream-serializer-afs-parent</artifactId>
 	<packaging>pom</packaging>
 	
 	<name>MicroStream Abstract File System</name>

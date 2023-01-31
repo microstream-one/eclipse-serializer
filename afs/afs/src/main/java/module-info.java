@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.afs
+module org.eclipse.microstream.serializer.afs
 {
-	exports one.microstream.afs.types;
-	exports one.microstream.afs.exceptions;
+	exports org.eclipse.microstream.serializer.afs.types;
+	exports org.eclipse.microstream.serializer.afs.exceptions;
 	
-	requires transitive microstream.base;
+	requires transitive org.eclipse.microstream.serializer.base;
 }
