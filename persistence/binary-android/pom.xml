@@ -13,8 +13,8 @@
 
 	<artifactId>microstream-serializer-persistence-binary-android</artifactId>
 	
-	<name>MicroStream Persistence Android</name>
-	<description>MicroStream Persistence Specialized Android Type Handlers</description>
+	<name>MicroStream Serializer Persistence Android</name>
+	<description>MicroStream Serializer Persistence Specialized Android Type Handlers</description>
 	
 	<dependencies>
 		<dependency>

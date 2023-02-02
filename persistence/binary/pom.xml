@@ -13,8 +13,8 @@
 
 	<artifactId>microstream-serializer-persistence-binary</artifactId>
 	
-	<name>MicroStream Persistence Binary</name>
-	<description>MicroStream Persistence Binary Data Extension</description>
+	<name>MicroStream Serializer Persistence Binary</name>
+	<description>MicroStream Serializer Persistence Binary Data Extension</description>
 	
 	<dependencies>
 		<dependency>

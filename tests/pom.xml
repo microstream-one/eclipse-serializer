@@ -13,6 +13,9 @@
     <artifactId>serializer-tests</artifactId>
     <packaging>pom</packaging>
 
+    <name>MicroStream Serializer Test Parent</name>
+    <description>MicroStream Serializer Test Parent</description>
+
     <modules>
         <module>integration</module>
     </modules>

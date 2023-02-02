@@ -2,7 +2,7 @@ package org.eclipse.microstream.serializer.tests.integration;
 
 /*-
  * #%L
- * integration
+ * MicroStream Serializer Test on JDK 11
  * %%
  * Copyright (C) 2019 - 2023 MicroStream Software
  * %%

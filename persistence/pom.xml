@@ -16,8 +16,8 @@
     <artifactId>microstream-serializer-persistence-parent</artifactId>
     <packaging>pom</packaging>
 
-    <name>MicroStream Persistence</name>
-    <description>MicroStream Persistence Project</description>
+    <name>MicroStream Serializer Persistence Parent</name>
+    <description>MicroStream Serializer Persistence Parent</description>
 
     <modules>
         <module>persistence</module>

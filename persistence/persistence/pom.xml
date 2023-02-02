@@ -13,8 +13,8 @@
 
 	<artifactId>microstream-serializer-persistence</artifactId>
 	
-	<name>MicroStream Persistence</name>
-	<description>MicroStream Persistence for Java Object Graphs</description>
+	<name>MicroStream Serializer Persistence</name>
+	<description>MicroStream Serializer Persistence for Java Object Graphs</description>
 	
 	<dependencies>
 		<dependency>

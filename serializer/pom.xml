@@ -16,7 +16,7 @@
 	<artifactId>microstream-serializer</artifactId>
 	
 	<name>MicroStream Serializer</name>
-	<description>MicroStream Serializer parts</description>
+	<description>MicroStream Serializer Main artifact</description>
 
 	<properties>
 	</properties>

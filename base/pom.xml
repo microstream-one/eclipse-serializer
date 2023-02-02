@@ -15,8 +15,8 @@
 
 	<artifactId>microstream-serializer-base</artifactId>
 	
-	<name>MicroStream Base</name>
-	<description>Commons Module of the MicroStream Framework</description>
+	<name>MicroStream Serializer Base</name>
+	<description>Commons Module of the MicroStream Serializer Framework</description>
 
 	<properties>
 		<maven.compiler.compilerId>eclipse</maven.compiler.compilerId>

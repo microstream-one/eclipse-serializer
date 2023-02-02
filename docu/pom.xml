@@ -16,8 +16,8 @@
 	<artifactId>documentation</artifactId>
 	<packaging>jar</packaging>
 	
-	<name>MicroStream User documentation</name>
-	<description>File System Abstraction Project</description>
+	<name>MicroStream Serializer User Documentation</name>
+	<description>MicroStream Serializer User Documentation</description>
 
 
 	<properties>

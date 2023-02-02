@@ -13,6 +13,9 @@
     <groupId>org.eclipse.microstream.serializer.tests</groupId>
     <artifactId>integration</artifactId>
 
+    <name>MicroStream Serializer Test on JDK 11</name>
+    <description>MicroStream Serializer Testing on JDK 11</description>
+
     <properties>
         <enforcer.skip>true</enforcer.skip>
     </properties>

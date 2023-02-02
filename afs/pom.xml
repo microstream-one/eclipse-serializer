@@ -15,9 +15,6 @@
 
 	<artifactId>microstream-serializer-afs-parent</artifactId>
 	<packaging>pom</packaging>
-	
-	<name>MicroStream Abstract File System</name>
-	<description>File System Abstraction Project</description>
 
 	<modules>
 		<module>afs</module>
