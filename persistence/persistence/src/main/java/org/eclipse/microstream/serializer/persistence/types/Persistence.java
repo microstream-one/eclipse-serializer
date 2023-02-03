@@ -973,36 +973,10 @@ public class Persistence
 		return enumRootIdentifier != null && enumRootIdentifier.startsWith(enumRootIdentifierStart());
 	}
 
-	@Deprecated
-	public static final String defaultRootIdentifier()
-	{
-		return "defaultRoot";
-	}
-
-	@Deprecated
-	public static final String customRootIdentifier()
-	{
-		return "root";
-	}
-
 	public static final String rootIdentifier()
 	{
 		// must be upper case to be distinct from old custom root concept for automatic version change detection.
 		return "ROOT";
-	}
-
-	/**
-	 * @param refactoringsFile the file to read from
-	 * @return a new mapping provider
-	 * 
-	 * @deprecated replaced by {@link #RefactoringMapping(Path)}, will be removed in version 8
-	 */
-	@Deprecated
-	public static final PersistenceRefactoringMappingProvider RefactoringMapping(
-		final File refactoringsFile
-	)
-	{
-		return RefactoringMapping(refactoringsFile.toPath());
 	}
 
 	public static final PersistenceRefactoringMappingProvider RefactoringMapping(
@@ -1058,17 +1032,6 @@ public class Persistence
 	)
 	{
 		return PersistenceRefactoringMappingProvider.New(refactoringMappings);
-	}
-
-	/**
-	 * @param file the file to read from
-	 * @return refactoring mappings from the file
-	 * @deprecated replaced by {@link #readRefactoringMappings(Path)}, will be removed in version 8
-	 */
-	@Deprecated
-	public static XGettingSequence<KeyValue<String, String>> readRefactoringMappings(final File file)
-	{
-		return readRefactoringMappings(file.toPath());
 	}
 
 	public static XGettingSequence<KeyValue<String, String>> readRefactoringMappings(final Path file)

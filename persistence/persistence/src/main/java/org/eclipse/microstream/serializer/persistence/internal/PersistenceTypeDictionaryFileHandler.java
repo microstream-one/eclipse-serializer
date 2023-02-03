@@ -107,13 +107,7 @@ public class PersistenceTypeDictionaryFileHandler implements PersistenceTypeDict
 			throw new PersistenceException(t);
 		}
 	}
-	
-	@Deprecated
-	public static PersistenceTypeDictionaryFileHandler NewInDirectory(final ADirectory directory)
-	{
-		return New(directory);
-	}
-	
+
 	public static PersistenceTypeDictionaryFileHandler New(final ADirectory directory)
 	{
 		return New(directory, null);
@@ -122,15 +116,6 @@ public class PersistenceTypeDictionaryFileHandler implements PersistenceTypeDict
 	public static PersistenceTypeDictionaryFileHandler New(final AFile file)
 	{
 		return New(file, null);
-	}
-	
-	@Deprecated
-	public static PersistenceTypeDictionaryFileHandler NewInDirectory(
-		final ADirectory                      directory    ,
-		final PersistenceTypeDictionaryStorer writeListener
-	)
-	{
-		return New(directory, writeListener);
 	}
 	
 		

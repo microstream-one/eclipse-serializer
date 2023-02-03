@@ -359,23 +359,6 @@ public interface BinaryLoader extends PersistenceLoader, PersistenceLoadHandler
 			// must explicitly require reference, otherwise #isUnrequiredReference will skip it as already existing.
 			this.requireReferenceEager(rootObjectId);
 		}
-
-		@Deprecated
-		@Override
-		public final void registerCustomRootRefactoring(final Object rootInstance, final long customRootObjectId)
-		{
-			this.registerRoot(rootInstance, customRootObjectId);
-		}
-
-		@Deprecated
-		@Override
-		public final void registerDefaultRootRefactoring(final Object rootInstance, final long defaultRootObjectId)
-		{
-			final Binary defaultRootLoadItem = this.lookupLoadItem(defaultRootObjectId);
-			final long defaultRootInstanceObjectId = BinaryHandlerSingleton.getReferenceObjectId(defaultRootLoadItem);
-
-			this.registerRoot(rootInstance, defaultRootInstanceObjectId);
-		}
 		
 		private void registerRoot(final Object rootInstance, final long rootObjectId)
 		{
