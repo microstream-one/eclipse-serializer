@@ -2,6 +2,8 @@
 
 Within this repo, the code donation of the MicroStream Serializer is prepared.
 
+Based on v7.1 : https://github.com/microstream-one/microstream/releases/tag/07.01.00-MS-GA
+
 Scope of Proposal
 
 With the Eclipse <fancyname> Serializer project, you can (de-)serialise any Java object without the need for an annotation, superclass or interface or a data schema that generates code.
@@ -12,12 +14,9 @@ General rules
 
 - No functional or architectural changes. Code will be donated as is. 
 - Only code required for the Serialization functionality will be included (all parts related to the StorageManager concept will be part of Eclipse Storage project)
-- Moving classes to new artifacts can be necessary to make sure the Serializer parts (like Serializer Foundation and specific Storer) are not leaking into the Eclipse Stream when they depend on these artifacts.
+- Moving classes to new artifacts can be necessary to make sure the Serializer parts (like Serializer Foundation and specific Storer) are not leaking into the Eclipse Storage (FIXME Not final name) when they depend on these artifacts.
 - Addition of high level integration tests to make sure the serializer works (and is compatible with binary format of MicroStream) is required.
 - Addition of User guide in asciidoc is needed so that developers know what to do and how features can be used.
-
-See also https://microstream.atlassian.net/wiki/spaces/MSG/pages/2113568769/Initial+donation and https://microstream.atlassian.net/wiki/spaces/MSG/pages/2118975491/Code+drop+and+changes
-
 
 
 ## Good to know
