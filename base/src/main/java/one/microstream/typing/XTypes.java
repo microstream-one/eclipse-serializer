@@ -27,8 +27,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import one.microstream.exceptions.NumberRangeException;
 
@@ -92,100 +90,6 @@ public final class XTypes
 		);
 	}
 
-	public static boolean isBooleanType(final Class<?> c)
-	{
-		return c == boolean.class || c == Boolean.class;
-	}
-
-	public static boolean isByteType(final Class<?> c)
-	{
-		return c == byte.class || c == Byte.class;
-	}
-
-	public static boolean isShortType(final Class<?> c)
-	{
-		return c == short.class || c == Short.class;
-	}
-
-	public static boolean isIntegerType(final Class<?> c)
-	{
-		return c == int.class || c == Integer.class;
-	}
-
-	public static boolean isLongType(final Class<?> c)
-	{
-		return c == long.class || c == Long.class;
-	}
-
-	public static boolean isFloatType(final Class<?> c)
-	{
-		return c == float.class || c == Float.class;
-	}
-
-	public static boolean isDoubleType(final Class<?> c)
-	{
-		return c == double.class || c == Double.class;
-	}
-
-	public static boolean isCharacterType(final Class<?> c)
-	{
-		return c == char.class || c == Character.class;
-	}
-
-	// just for conformity in use along with the other ones
-	public static boolean isStringType(final Class<?> c)
-	{
-		return c == String.class;
-	}
-	
-	public static boolean isCharSequenceType(final Class<?> c)
-	{
-		return CharSequence.class.isAssignableFrom(c);
-	}
-
-	public static boolean isNaturalNumberType(final Class<?> c)
-	{
-		return c == byte.class
-			|| c == Byte.class
-			|| c == short.class
-			|| c == Short.class
-			|| c == int.class
-			|| c == Integer.class
-			|| c == long.class
-			|| c == Long.class
-			|| c == BigInteger.class
-			|| c == AtomicInteger.class
-			|| c == AtomicLong.class
-		;
-	}
-
-	public static boolean isDecimalType(final Class<?> c)
-	{
-		return c == float.class
-			|| c == Float.class
-			|| c == double.class
-			|| c == Double.class
-			|| c == BigDecimal.class
-		;
-	}
-
-	public static boolean isNumberType(final Class<?> c)
-	{
-		return c == byte.class
-			|| c == short.class
-			|| c == int.class
-			|| c == long.class
-			|| c == float.class
-			|| c == double.class
-			|| Number.class.isAssignableFrom(c)
-		;
-	}
-
-	public static boolean isLiteralType(final Class<?> c)
-	{
-		return c == String.class || c == char.class || c == Character.class;
-	}
-
 	public static boolean isValueType(final Class<?> c)
 	{
 		// all value types, ordered in common use probability
@@ -196,40 +100,6 @@ public final class XTypes
 		;
 	}
 	
-	public static boolean isNaturalNumber(final Object o)
-	{
-		// NOT Float or Double
-		return o instanceof Integer
-			|| o instanceof Short
-			|| o instanceof Long
-			|| o instanceof Byte
-			|| o instanceof BigInteger
-			|| o instanceof AtomicInteger
-			|| o instanceof AtomicLong
-		;
-	}
-
-	// just for conformity in use along with the other ones
-	public static boolean isNumber(final Object o)
-	{
-		return o instanceof Number;
-	}
-
-	public static boolean isDecimal(final Object o)
-	{
-		return o instanceof Float || o instanceof Double || o instanceof BigDecimal;
-	}
-
-	public static boolean isLiteral(final Object o)
-	{
-		return o instanceof String || o instanceof Character;
-	}
-
-	// just for conformity in use along with the other ones
-	public static boolean isBoolean(final Object o)
-	{
-		return o instanceof Boolean;
-	}
 
 	/**
 	 * Checks if the type of the passed instance is an immutable special value type of the java language.
@@ -247,20 +117,6 @@ public final class XTypes
 		;
 	}
 
-	public static boolean isPrimitiveWrapper(final Object o)
-	{
-		// all primitive wrapper types, ordered in common use probability
-		return o instanceof Integer
-			|| o instanceof Long
-			|| o instanceof Double
-			|| o instanceof Character
-			|| o instanceof Boolean
-			|| o instanceof Float
-			|| o instanceof Byte
-			|| o instanceof Short
-		;
-	}
-	
 	public static final byte to_byte(final boolean value)
 	{
 		return value
@@ -274,14 +130,6 @@ public final class XTypes
 		return value != 0;
 	}
 
-	public static final int to_int(final boolean value)
-	{
-		return value
-			? 1
-			: 0
-		;
-	}
-	
 	public static final int to_int(final long value) throws NumberRangeException
 	{
 		if(value > Integer.MAX_VALUE)
@@ -295,100 +143,6 @@ public final class XTypes
 		return (int)value;
 	}
 
-	public static final int to_int(final float value) throws NumberRangeException
-	{
-		if(value > Integer.MAX_VALUE)
-		{
-			throw new IllegalArgumentException(value + " > " + Integer.MAX_VALUE);
-		}
-		else if(value < Integer.MIN_VALUE)
-		{
-			throw new IllegalArgumentException(value + " < " + Integer.MIN_VALUE);
-		}
-		return (int)value;
-	}
-
-	public static final int to_int(final double value) throws NumberRangeException
-	{
-		if(value > Integer.MAX_VALUE)
-		{
-			throw new IllegalArgumentException(value + " > " + Integer.MAX_VALUE);
-		}
-		else if(value < Integer.MIN_VALUE)
-		{
-			throw new IllegalArgumentException(value + " < " + Integer.MIN_VALUE);
-		}
-		return (int)value;
-	}
-
-	public static final int to_int(final Number value) throws NumberRangeException, NullPointerException
-	{
-		return to_int(value.longValue());
-	}
-	
-	
-	
-	public static final Byte asByte(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Byte
-				? (Byte)value
-				: Byte.valueOf(value.byteValue())
-		;
-	}
-	
-	public static final Short asShort(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Short
-				? (Short)value
-				: Short.valueOf(value.shortValue())
-		;
-	}
-	
-	public static final Integer asInteger(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Integer
-				? (Integer)value
-				: Integer.valueOf(value.intValue())
-		;
-	}
-	
-	public static final Float asFloat(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Float
-				? (Float)value
-				: Float.valueOf(value.floatValue())
-		;
-	}
-	
-	public static final Long asLong(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Long
-				? (Long)value
-				: Long.valueOf(value.longValue())
-		;
-	}
-	
-	public static final Double asDouble(final Number value)
-	{
-		return value == null
-			? null
-			: value instanceof Double
-				? (Double)value
-				: Double.valueOf(value.doubleValue())
-		;
-	}
-	
-	
 	public static final TypeMapping<Float> createDefaultTypeSimilarity()
 	{
 		final Class<?>[] primitives =

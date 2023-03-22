@@ -22,7 +22,6 @@ package one.microstream.hashing;
 
 import one.microstream.math.XMath;
 import one.microstream.typing.KeyValue;
-import one.microstream.typing.XTypes;
 
 
 /**
@@ -71,26 +70,6 @@ public final class XHashing
 		public final boolean equal(final Object object1, final Object object2)
 		{
 			return object1 == object2 || object1 != null && object1.equals(object2);
-		}
-	}
-
-	static final class NonNullSingletonValueHashEqualator implements HashEqualator.ValueTypeHashEqualator<Object>
-	{
-		NonNullSingletonValueHashEqualator()
-		{
-			super();
-		}
-
-		@Override
-		public final int hash(final Object object)
-		{
-			return object.hashCode();
-		}
-
-		@Override
-		public final boolean equal(final Object object1, final Object object2)
-		{
-			return object1.equals(object2);
 		}
 	}
 
@@ -215,15 +194,6 @@ public final class XHashing
 		};
 	}
 
-	public static final <E> HashEqualator<E> deriveHashEquality(final Class<E> type)
-	{
-		return XTypes.isValueType(type)
-			? XHashing.<E>hashEqualityValue()
-			: XHashing.<E>hashEqualityIdentity()
-		;
-	}
-
-	
 
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //

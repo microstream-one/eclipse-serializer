@@ -21,7 +21,6 @@ package one.microstream.memory.sun;
  */
 
 import static one.microstream.X.coalesce;
-import static one.microstream.X.mayNull;
 
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
@@ -34,10 +33,8 @@ import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import one.microstream.exceptions.InstantiationRuntimeException;
-import one.microstream.functional.DefaultInstantiator;
 import one.microstream.memory.DirectBufferAddressGetter;
 import one.microstream.memory.DirectBufferDeallocator;
 import one.microstream.memory.MemoryStatistics;
@@ -230,20 +227,6 @@ public final class JdkInternals
 		INITIALIZATION_WARNINGS.add(new Warning.Default(message, cause));
 	}
 
-	public static final List<Warning> initializationWarnings()
-	{
-		return INITIALIZATION_WARNINGS;
-	}
-
-	public static final void printInitializationWarnings(final PrintStream printStream)
-	{
-		for(final Warning warning : INITIALIZATION_WARNINGS)
-		{
-			warning.print(printStream);
-			printStream.println();
-		}
-	}
-
 	public interface Warning
 	{
 		public String message();
@@ -360,58 +343,6 @@ public final class JdkInternals
 		}
 
 		return new JdkDirectBufferDeallocator();
-	}
-
-	/**
-	 * Allows to set the {@link DirectBufferDeallocator} used by
-	 * {@link #deallocateDirectBuffer(ByteBuffer)} as an override to the means this class inherently tries to provide.<br>
-	 * See {@link DirectBufferDeallocator} for details.
-	 * <p>
-	 * The passed instance "should" be immutable or better stateless to ensure concurrency-safe usage,
-	 * but ultimately, the responsibility resides with the author of the instance's implementation.
-	 * <p>
-	 * Passing a {@literal null} resets the behavior of {@link #deallocateDirectBuffer(ByteBuffer)} to the inherent logic.
-	 *
-	 * @param deallocator the deallocator to be used, potentially {@literal null}.
-	 *
-	 * @see DirectBufferDeallocator
-	 */
-	public static synchronized void setDirectBufferDeallocator(
-		final DirectBufferDeallocator deallocator
-	)
-	{
-		directBufferDeallocator = notNull(deallocator);
-	}
-
-	public static synchronized DirectBufferDeallocator getDirectBufferDeallocator()
-	{
-		return directBufferDeallocator;
-	}
-
-	/**
-	 * Allows to set the {@link DirectBufferAddressGetter} used by
-	 * {@link #getDirectByteBufferAddress(ByteBuffer)} as an override to the means this class inherently tries to provide.<br>
-	 * See {@link DirectBufferAddressGetter} for details.
-	 * <p>
-	 * The passed instance "should" be immutable or better stateless to ensure concurrency-safe usage,
-	 * but ultimately, the responsibility resides with the author of the instance's implementation.
-	 * <p>
-	 * Passing a {@literal null} resets the behavior of {@link #getDirectByteBufferAddress(ByteBuffer)} to the inherent logic.
-	 *
-	 * @param addressGetter the addressGetter to be used, potentially {@literal null}.
-	 *
-	 * @see DirectBufferDeallocator
-	 */
-	public static synchronized void setDirectBufferAddressGetter(
-		final DirectBufferAddressGetter addressGetter
-	)
-	{
-		directBufferAddressGetter = mayNull(addressGetter);
-	}
-
-	public static synchronized DirectBufferAddressGetter getDirectBufferAddressGetter()
-	{
-		return directBufferAddressGetter;
 	}
 
 	// "internal" prefixed method that is public, to indicate that it uses JDK-internal details.
@@ -754,19 +685,6 @@ public final class JdkInternals
 		VM.copyMemory(sourceAddress, targetAddress, length);
 	}
 
-	public static final void copyRange(
-		final Object source      ,
-		final long   sourceOffset,
-		final Object target      ,
-		final long   targetOffset,
-		final long   length
-	)
-	{
-		VM.copyMemory(source, sourceOffset, target, targetOffset, length);
-	}
-
-
-
 	// address-to-array range copying //
 
 	public static final void copyRangeToArray(final long sourceAddress, final byte[] target)
@@ -1014,14 +932,6 @@ public final class JdkInternals
 		VM.ensureClassInitialized(c);
 	}
 
-	public static final void ensureClassInitialized(final Class<?>... classes)
-	{
-		for(final Class<?> c : classes)
-		{
-			ensureClassInitialized(c);
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	public static final <T> T instantiateBlank(final Class<T> c) throws InstantiationRuntimeException
 	{
@@ -1034,18 +944,6 @@ public final class JdkInternals
 			throw new InstantiationRuntimeException(e);
 		}
 	}
-
-	public static final DefaultInstantiator InstantiatorBlank()
-	{
-		return JdkInstantiatorBlank.New();
-	}
-
-	public static final DirectBufferDeallocator DirectBufferDeallocator()
-	{
-		return new JdkDirectBufferDeallocator();
-	}
-
-
 
 	// memory size querying logic //
 
@@ -1195,50 +1093,6 @@ public final class JdkInternals
 	// SUN-specific low-level logic //
 	/////////////////////////////////
 
-	// unchecked throwing magic //
-
-	public static final void throwUnchecked(final Throwable t) // magically throws Throwable
-	{
-		// magic!
-		VM.throwException(t);
-	}
-
-
-
-	// compare and swap //
-
-	public static final boolean compareAndSwap_int(
-		final Object subject    ,
-		final long   offset     ,
-		final int    expected   ,
-		final int    replacement
-	)
-	{
-		return VM.compareAndSwapInt(subject, offset, expected, replacement);
-	}
-
-	public static final boolean compareAndSwap_long(
-		final Object subject    ,
-		final long   offset     ,
-		final long   expected   ,
-		final long   replacement
-	)
-	{
-		return VM.compareAndSwapLong(subject, offset, expected, replacement);
-	}
-
-	public static final boolean compareAndSwapObject(
-		final Object subject    ,
-		final long   offset     ,
-		final Object expected   ,
-		final Object replacement
-	)
-	{
-		return VM.compareAndSwapObject(subject, offset, expected, replacement);
-	}
-
-
-
 	// memory aligning arithmetic //
 
 	public static final long alignAddress(final long address)
@@ -1249,29 +1103,6 @@ public final class JdkInternals
 		}
 		// According to tests and investigation, memory alignment is always 8 bytes, even for 32 bit JVMs.
 		return (address & MEMORY_ALIGNMENT_MASK) + MEMORY_ALIGNMENT_FACTOR;
-	}
-
-
-
-	// static field base and offsets //
-
-	public static Object getStaticFieldBase(final Field field)
-	{
-		return VM.staticFieldBase(notNull(field)); // throws IllegalArgumentException, so no need to check here
-	}
-
-	public static long[] getStaticFieldOffsets(final Field[] fields)
-	{
-		final long[] offsets = new long[fields.length];
-		for(int i = 0; i < fields.length; i++)
-		{
-			if(!Modifier.isStatic(fields[i].getModifiers()))
-			{
-				throw new IllegalArgumentException("Not a static field: " + fields[i]);
-			}
-			offsets[i] = (int)VM.staticFieldOffset(fields[i]);
-		}
-		return offsets;
 	}
 
 
@@ -1315,18 +1146,6 @@ public final class JdkInternals
 
 		return (int)capacity;
 	}
-
-	private static final <T> T notNull(final T object) throws NullPointerException
-	{
-		if(object == null)
-		{
-			throw new NullPointerException();
-		}
-
-		return object;
-	}
-
-
 
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //

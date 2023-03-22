@@ -196,25 +196,6 @@ public final class XMemory
 		);
 	}
 
-	static final VmCheck VmInitializer(
-		final String     name                         ,
-		final Runnable   action                       ,
-		final String[][] systemPropertyChecksEquality ,
-		final String[][] systemPropertyChecksContained,
-		final String[]   systemPropertyChecksNotNull
-	)
-	{
-		return new VmCheck(
-			name,
-			SystemPropertyCheck(
-				systemPropertyChecksEquality,
-				systemPropertyChecksContained,
-				systemPropertyChecksNotNull
-			),
-			action
-		);
-	}
-
 	private static Predicate<VmCheck> SystemPropertyCheckEquality(
 		final String[][] systemPropertyChecksEquality
 	)
@@ -350,16 +331,6 @@ public final class XMemory
 		return MEMORY_ACCESSOR;
 	}
 
-	public static final synchronized MemoryAccessor memoryAccessorReversing()
-	{
-		return MEMORY_ACCESSOR_REVERSED;
-	}
-
-	public static final synchronized MemorySizeProperties memorySizeProperties()
-	{
-		return MEMORY_SIZE_PROPERTIES;
-	}
-
 	public static final void guaranteeUsability()
 	{
 		MEMORY_ACCESSOR.guaranteeUsability();
@@ -379,41 +350,6 @@ public final class XMemory
 		return MEMORY_ACCESSOR.deallocateDirectByteBuffer(directBuffer);
 	}
 
-	public static final boolean isDirectByteBuffer(final ByteBuffer byteBuffer)
-	{
-		return MEMORY_ACCESSOR.isDirectByteBuffer(byteBuffer);
-	}
-
-	public static final ByteBuffer guaranteeDirectByteBuffer(final ByteBuffer directBuffer)
-	{
-		return MEMORY_ACCESSOR.guaranteeDirectByteBuffer(directBuffer);
-	}
-
-
-
-	// memory allocation //
-
-	public static final long allocate(final long bytes)
-	{
-		return MEMORY_ACCESSOR.allocateMemory(bytes);
-	}
-
-	public static final long reallocate(final long address, final long bytes)
-	{
-		return MEMORY_ACCESSOR.reallocateMemory(address, bytes);
-	}
-
-	public static final void free(final long address)
-	{
-		MEMORY_ACCESSOR.freeMemory(address);
-	}
-
-	public static final void fillMemory(final long address, final long length, final byte value)
-	{
-		MEMORY_ACCESSOR.fillMemory(address, length, value);
-	}
-
-
 
 	// memory size querying logic //
 
@@ -432,11 +368,6 @@ public final class XMemory
 		return 4096;
 	}
 
-	public static final int pageSize()
-	{
-		return MEMORY_SIZE_PROPERTIES.pageSize();
-	}
-
 	public static final int byteSizeInstance(final Class<?> c)
 	{
 		return MEMORY_SIZE_PROPERTIES.byteSizeInstance(c);
@@ -445,56 +376,6 @@ public final class XMemory
 	public static final int byteSizeObjectHeader(final Class<?> c)
 	{
 		return MEMORY_SIZE_PROPERTIES.byteSizeObjectHeader(c);
-	}
-
-	public static final int byteSizeFieldValue(final Field field)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeFieldValue(field);
-	}
-
-	public static final int byteSizeFieldValue(final Class<?> type)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeFieldValue(type);
-	}
-
-	public static final long byteSizeArray_byte(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_byte(elementCount);
-	}
-
-	public static final long byteSizeArray_boolean(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_boolean(elementCount);
-	}
-
-	public static final long byteSizeArray_short(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_short(elementCount);
-	}
-
-	public static final long byteSizeArray_char(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_char(elementCount);
-	}
-
-	public static final long byteSizeArray_int(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_int(elementCount);
-	}
-
-	public static final long byteSizeArray_float(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_float(elementCount);
-	}
-
-	public static final long byteSizeArray_long(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_long(elementCount);
-	}
-
-	public static final long byteSizeArray_double(final long elementCount)
-	{
-		return MEMORY_SIZE_PROPERTIES.byteSizeArray_double(elementCount);
 	}
 
 	public static final long byteSizeArrayObject(final long elementCount)
@@ -542,11 +423,6 @@ public final class XMemory
 		throw new IllegalArgumentException();
 	}
 
-	public static final int bitSize_byte()
-	{
-		return Byte.SIZE;
-	}
-
 	public static final int byteSize_byte()
 	{
 		return Byte.BYTES;
@@ -592,58 +468,11 @@ public final class XMemory
 		return MEMORY_SIZE_PROPERTIES.byteSizeReference();
 	}
 
-	public static final int bitSize_boolean()
-	{
-		return Byte.SIZE;
-	}
-
-	public static final int bitSize_short()
-	{
-		return Short.SIZE;
-	}
-
-	public static final int bitSize_char()
-	{
-		return Character.SIZE;
-	}
-
-	public static final int bitSize_int()
-	{
-		return Integer.SIZE;
-	}
-
-	public static final int bitSize_float()
-	{
-		return Float.SIZE;
-	}
-
-	public static final int bitSize_long()
-	{
-		return Long.SIZE;
-	}
-
-	public static final int bitSize_double()
-	{
-		return Double.SIZE;
-	}
-
-
-
 	// field offset abstraction //
 
 	public static final long objectFieldOffset(final Field field)
 	{
 		return MEMORY_ACCESSOR.objectFieldOffset(field);
-	}
-
-	public static final long[] objectFieldOffsets(final Field[] fields)
-	{
-		return MEMORY_ACCESSOR.objectFieldOffsets(fields);
-	}
-
-	public static final long objectFieldOffset(final Class<?> c, final Field field)
-	{
-		return MEMORY_ACCESSOR.objectFieldOffset(c, field);
 	}
 
 	public static final long[] objectFieldOffsets(final Class<?> c, final Field[] fields)
@@ -846,16 +675,6 @@ public final class XMemory
 
 	// transformative byte array primitive value setters //
 
-	public static final void set_byteInBytes(final byte[] bytes, final int index, final byte value)
-	{
-		MEMORY_ACCESSOR.set_byteInBytes(bytes, index, value);
-	}
-
-	public static final void set_booleanInBytes(final byte[] bytes, final int index, final boolean value)
-	{
-		MEMORY_ACCESSOR.set_booleanInBytes(bytes, index, value);
-	}
-
 	public static final void set_shortInBytes(final byte[] bytes, final int index, final short value)
 	{
 		MEMORY_ACCESSOR.set_shortInBytes(bytes, index, value);
@@ -985,20 +804,6 @@ public final class XMemory
 
 
 
-	// conversion to byte array //
-
-	public static final byte[] asByteArray(final long[] longArray)
-	{
-		return MEMORY_ACCESSOR.asByteArray(longArray);
-	}
-
-	public static final byte[] asByteArray(final long value)
-	{
-		return MEMORY_ACCESSOR.asByteArray(value);
-	}
-
-
-
 	// special system methods, not really memory-related //
 
 	public static final void ensureClassInitialized(final Class<?> c)
@@ -1017,44 +822,9 @@ public final class XMemory
 	}
 
 
-	public static final ByteOrder nativeByteOrder()
-	{
-		return ByteOrder.nativeOrder();
-	}
-
 	public static final boolean isBigEndianNativeOrder()
 	{
 		return ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
-	}
-
-	public static final boolean isLittleEndianNativeOrder()
-	{
-		return ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN;
-	}
-
-	/**
-	 * Parses a {@link String} instance to a {@link ByteOrder} instance according to {@code ByteOrder#toString()}
-	 * or throws an {@link IllegalArgumentException} if the passed string does not match exactly one of the
-	 * {@link ByteOrder} constant instances' string representation.
-	 *
-	 * @param name the string representing the {@link ByteOrder} instance to be parsed.
-	 * @return the recognized {@link ByteOrder}
-	 * @throws IllegalArgumentException if the string can't be recognized as a {@link ByteOrder} constant instance.
-	 * @see ByteOrder#toString()
-	 */
-	// because they (he) couldn't have implemented that where it belongs.
-	public static final ByteOrder parseByteOrder(final String name)
-	{
-		if(name.equals(ByteOrder.BIG_ENDIAN.toString()))
-		{
-			return ByteOrder.BIG_ENDIAN;
-		}
-		if(name.equals(ByteOrder.LITTLE_ENDIAN.toString()))
-		{
-			return ByteOrder.LITTLE_ENDIAN;
-		}
-
-		throw new IllegalArgumentException("Unknown ByteOrder: \"" + name + "\"");
 	}
 
 	/**
@@ -1085,11 +855,6 @@ public final class XMemory
 		return allocateDirectNative(
 			X.checkArrayRange(capacity)
 		);
-	}
-
-	public static final ByteBuffer allocateDirectNativeDefault()
-	{
-		return allocateDirectNative(XMemory.defaultBufferSize());
 	}
 
 	// another episode of "They couldn't even implement the most basic functionality."
@@ -1162,26 +927,6 @@ public final class XMemory
 		return buffer;
 	}
 	
-	public static final ByteBuffer capLimit(final ByteBuffer buffer, final long limit)
-	{
-		if(limit < buffer.limit())
-		{
-			buffer.limit((int)limit);
-		}
-
-		return buffer;
-	}
-	
-	public static final ByteBuffer clearForLimit(final ByteBuffer buffer, final long limit)
-	{
-		buffer.clear();
-		capLimit(buffer, limit);
-
-		return buffer;
-	}
-
-
-
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
