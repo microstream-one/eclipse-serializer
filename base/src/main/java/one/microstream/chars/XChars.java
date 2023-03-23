@@ -985,7 +985,7 @@ public final class XChars
 	 * @param instance the instance whose system string shall be generated.
 	 * @return the system string for the passed instance.
 	 */
-	public static String systemString(final Object instance)
+	public static final String systemString(final Object instance)
 	{
 		return instance == null
 			? null
@@ -993,7 +993,7 @@ public final class XChars
 		;
 	}
 	
-	public static VarString addSystemString(final Object instance, final VarString vs)
+	public static final VarString addSystemString(final Object instance, final VarString vs)
 	{
 		return instance == null
 			? vs.addNull()
@@ -1004,7 +1004,7 @@ public final class XChars
 		;
 	}
 
-	public static String trimEmptyToNull(final String s)
+	public static final String trimEmptyToNull(final String s)
 	{
 		// if the string is null in the first place, null is returned.
 		if(s == null)

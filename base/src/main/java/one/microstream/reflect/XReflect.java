@@ -515,7 +515,7 @@ public final class XReflect
 
 
 	/**
-	 * This methods attempts to resolve the passed {@literal typeNames} to {@link Class} instances using
+	 * This method attempts to resolve the passed {@literal typeNames} to {@link Class} instances using
 	 * {@link #resolveType(String, ClassLoader)} one by one.
 	 * The {@link Class} instance of the first successful attempt is returned.
 	 * If none of the passed {@literal typeNames} can be resolved, {@literal null} is returned.

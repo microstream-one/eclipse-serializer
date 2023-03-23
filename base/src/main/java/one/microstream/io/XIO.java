@@ -263,38 +263,6 @@ public final class XIO
 		return directory;
 	}
 	
-	public static final <P extends Path> P ensureDirectoryAndFile(final P file) throws IOException
-	{
-		final Path parent;
-		if((parent = file.getParent()) != null)
-		{
-			ensureDirectory(parent);
-		}
-		
-		return ensureFile(file);
-	}
-
-	public static final <P extends Path> P ensureFile(final P file) throws IOException
-	{
-		if(Files.notExists(file))
-		{
-			try
-			{
-				Files.createFile(file);
-			}
-			catch(final FileAlreadyExistsException e)
-			{
-				// alright then
-			}
-			catch(final IOException e)
-			{
-				throw e;
-			}
-		}
-		
-		return file;
-	}
-	
 	public static FileChannel openFileChannelReading(final Path file)
 		throws IOException
 	{
@@ -473,8 +441,6 @@ public final class XIO
 	 * Uses {@link #openFileChannelReading(Path)}, {@link #openFileChannelWriting(Path, OpenOption...)}
 	 * and {@link #copyFile(FileChannel, FileChannel)} to copy the contents of the specified {@code sourceFile}
 	 * to the specified {@code targetFile}.<br>
-	 * {@link #ensureDirectoryAndFile(Path)} is intentionally <b>NOT</b> called in order to not swallow problems
-	 * in the calling context's logic.<p>
 	 * <b>Important note</b>:<br>
 	 * This method is a fix for the JDK method {@link Files#copy(Path, Path, java.nio.file.CopyOption...)},
 	 * which throws an exception about another process having locked "the file" (without specifying
@@ -497,8 +463,6 @@ public final class XIO
 	 * 
 	 * @throws IOException if an IO error occurs
 	 * 
-	 * @see #ensureFile(Path)
-	 * @see #ensureDirectoryAndFile(Path)
 	 * @see StandardOpenOption
 	 * @see #openFileChannelReading(Path)
 	 * @see #copyFile(FileChannel, FileChannel)

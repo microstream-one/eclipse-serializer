@@ -857,7 +857,6 @@ public final class XMemory
 		);
 	}
 
-	// another episode of "They couldn't even implement the most basic functionality."
 	public static final byte[] toArray(final ByteBuffer source)
 	{
 		final int currentSourcePosition = source.position();
@@ -867,20 +866,6 @@ public final class XMemory
 
 		// why would a querying methode intrinsically increase the position? WHY?
 		source.position(currentSourcePosition);
-
-		return bytes;
-	}
-
-	public static final byte[] toArray(final ByteBuffer source, final int position, final int length)
-	{
-		final long plState = getPositionLimit(source);
-		setPositionLimit(source, position, position + length);
-
-		final byte[] bytes = new byte[length];
-		source.get(bytes, 0, length);
-
-		// why would a querying methode intrinsically increase the position? WHY?
-		setPositionLimit(source, plState);
 
 		return bytes;
 	}

@@ -903,7 +903,7 @@ public final class JdkInternals
 	}
 
 	/**
-	 * Array alias vor #objectFieldOffset(Field).
+	 * Array alias for #objectFieldOffset(Field).
 	 * 
 	 * @param fields the fields to get the offset for
 	 * @return the fields values' memory offsets.
