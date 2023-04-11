@@ -1,8 +1,8 @@
 /*-
  * #%L
- * microstream-persistence-binary-jdk8
+ * Eclipse Serializer Persistence JDK8
  * %%
- * Copyright (C) 2019 - 2022 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,13 +17,13 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence.binary.jdk8
+module org.eclipse.serializer.persistence.binary.jdk8
 {
-	exports one.microstream.persistence.binary.jdk8.types;
-	exports one.microstream.persistence.binary.jdk8.java.util;
+	exports org.eclipse.serializer.persistence.binary.jdk8.types;
+	exports org.eclipse.serializer.persistence.binary.jdk8.java.util;
 	
 	requires jdk.unsupported;
-	requires microstream.base;
-	requires microstream.persistence;
-	requires microstream.persistence.binary;
+	requires org.eclipse.serializer.base;
+	requires org.eclipse.serializer.persistence;
+	requires org.eclipse.serializer.persistence.binary;
 }

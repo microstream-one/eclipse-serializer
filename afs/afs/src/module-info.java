@@ -1,8 +1,8 @@
 /*-
  * #%L
- * microstream-afs
+ * Eclipse Serializer Abstract File System
  * %%
- * Copyright (C) 2019 - 2022 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,10 +17,10 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.afs
+module org.eclipse.serializer.afs
 {
-	exports one.microstream.afs.types;
-	exports one.microstream.afs.exceptions;
+	exports org.eclipse.serializer.afs.types;
+	exports org.eclipse.serializer.afs.exceptions;
 	
-	requires microstream.base;
+	requires org.eclipse.serializer.base;
 }

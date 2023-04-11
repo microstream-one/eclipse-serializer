@@ -5,16 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-persistence-parent</artifactId>
-		<version>07.01.00-eclipse</version>
+		<groupId>org.eclipse.serializer</groupId>
+		<artifactId>serializer-persistence-parent</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-persistence-binary-jdk17</artifactId>
+	<artifactId>serializer-persistence-binary-jdk17</artifactId>
 	
-	<name>MicroStream Persistence JDK17</name>
-	<description>MicroStream Persistence Specialized Type Handlers for JDK17</description>
+	<name>Eclipse Serializer Persistence JDK17</name>
+	<description>Eclipse Serializer Persistence Specialized Type Handlers for JDK17+</description>
 	
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -24,9 +24,9 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-persistence-binary</artifactId>
-			<version>07.01.00-eclipse</version>
+			<groupId>org.eclipse.serializer</groupId>
+			<artifactId>serializer-persistence-binary</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

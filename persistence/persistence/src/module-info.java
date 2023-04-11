@@ -1,8 +1,8 @@
 /*-
  * #%L
- * microstream-persistence
+ * Eclipse Serializer Persistence
  * %%
- * Copyright (C) 2019 - 2022 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,12 +17,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence
+module org.eclipse.serializer.persistence
 {
-	exports one.microstream.persistence.exceptions;
-	exports one.microstream.persistence.types;
-	exports one.microstream.persistence.internal;
+	exports org.eclipse.serializer.persistence.exceptions;
+	exports org.eclipse.serializer.persistence.types;
+	exports org.eclipse.serializer.persistence.internal;
 	
-	requires microstream.afs;
-	requires microstream.base;
+	requires org.eclipse.serializer.afs;
+	requires org.eclipse.serializer.base;
 }

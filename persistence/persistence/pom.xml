@@ -5,22 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-persistence-parent</artifactId>
-		<version>07.01.00-eclipse</version>
+		<groupId>org.eclipse.serializer</groupId>
+		<artifactId>serializer-persistence-parent</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-persistence</artifactId>
+	<artifactId>serializer-persistence</artifactId>
 	
-	<name>MicroStream Persistence</name>
-	<description>MicroStream Persistence for Java Object Graphs</description>
+	<name>Eclipse Serializer Persistence</name>
+	<description>Eclipse Serializer Persistence for Java Object Graphs</description>
 	
 	<dependencies>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-afs</artifactId>
-			<version>07.01.00-eclipse</version>
+			<groupId>org.eclipse.serializer</groupId>
+			<artifactId>serializer-afs</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	

@@ -1,8 +1,8 @@
 /*-
  * #%L
- * MicroStream Serializer
+ * Eclipse Serializer
  * %%
- * Copyright (C) 2019 - 2023 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -18,9 +18,9 @@
  * #L%
  */
 
-module org.eclipse.microstream.serializer
+module org.eclipse.serializer
 {
-    exports one.microstream.serializer;
+    exports org.eclipse.serializer;
 
-    requires transitive microstream.persistence.binary;
+    requires transitive org.eclipse.serializer.persistence.binary;
 }

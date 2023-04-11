@@ -4,17 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>one.microstream</groupId>
+        <groupId>org.eclipse.serializer</groupId>
         <artifactId>serializer-tests</artifactId>
-        <version>07.01.00-eclipse</version>
+        <version>0.9.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>one.microstream.serializer.tests</groupId>
+    <groupId>org.eclipse.serializer.tests</groupId>
     <artifactId>integration</artifactId>
+    <version>0.9.0-SNAPSHOT</version>
 
-    <name>MicroStream Serializer Test on JDK 8</name>
-    <description>MicroStream Serializer Testing on JDK 8</description>
+    <name>Eclipse Serializer Test on JDK 8</name>
+    <description>Eclipse Serializer Testing on JDK 8</description>
 
     <properties>
         <enforcer.skip>true</enforcer.skip>
@@ -35,14 +36,14 @@
     <dependencies>
 
         <dependency>
-            <groupId>one.microstream</groupId>
-            <artifactId>microstream-serializer</artifactId>
+            <groupId>org.eclipse.serializer</groupId>
+            <artifactId>serializer</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>one.microstream</groupId>
-            <artifactId>microstream-persistence-binary-jdk8</artifactId>
+            <groupId>org.eclipse.serializer</groupId>
+            <artifactId>serializer-persistence-binary-jdk8</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 

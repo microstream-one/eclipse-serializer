@@ -6,26 +6,19 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>one.microstream</groupId>
-	<artifactId>microstream-parent</artifactId>
-	<version>07.01.00-eclipse</version>
+	<groupId>org.eclipse.serializer</groupId>
+	<artifactId>serializer-parent</artifactId>
+	<version>0.9.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>MicroStream</name>
-	<description>Microstream Project</description>
-	<url>https://microstream.one</url>
+	<name>Eclipse Serializer</name>
+	<description>Eclipse Serializer project</description>
+	<url>https://projects.eclipse.org/projects/technology.serializer</url>
 
 	<organization>
-		<name>MicroStream Software</name>
-		<url>https://microstream.one</url>
+		<name>Eclipse Foundation</name>
+		<url>https://eclipse.org</url>
 	</organization>
-
-	<developers>
-		<developer>
-			<name>MicroStream Software</name>
-			<url>https://microstream.one</url>
-		</developer>
-	</developers>
 
 	<licenses>
 		<license>
@@ -40,40 +33,28 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.owasp.depencency.check.version>6.1.6</org.owasp.depencency.check.version>
 		<org.eclipse.jdt.ecj.version>3.26.0</org.eclipse.jdt.ecj.version>
-		<license.inceptionYear>2019</license.inceptionYear>
+		<license.inceptionYear>2023</license.inceptionYear>
 		<license.licenseName>epl_v2</license.licenseName>
 		<license.licenceFile>${basedir}/LICENSE</license.licenceFile>
-		<api.version>7.0</api.version>
+		<api.version>0.9</api.version>
 		<javadoc.failed.on.error>false</javadoc.failed.on.error>
 	</properties>
 
 	<modules>
-		<module>afs</module>
 		<module>base</module>
+		<module>afs</module>
 		<module>persistence</module>
 		<module>serializer</module>
 		<module>tests</module>
 	</modules>
 
-	<distributionManagement>
-		<repository>
-			<id>ossrh</id>
-			<name>Sonytype Nexus Releases</name>
-			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<snapshotRepository>
-			<id>microstream-repo</id>
-			<url>https://repo.microstream.one/repository/maven-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<scm>
-		<connection>scm:git:git@github.com:microstream-one/microstream.git</connection>
-		<developerConnection>scm:git:git@github.com:microstream-one/microstream.git</developerConnection>
-		<url>https://github.com/microstream-one/microstream</url>
+		<connection>scm:git:git@github.com:eclipse-serializer/serializer.git</connection>
+		<developerConnection>scm:git:git@github.com:eclipse-serializer/serializer.git</developerConnection>
+		<url>https://github.com/eclipse-serializer</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -173,7 +154,7 @@
 					</executions>
 					<configuration>
 						<instructions>
-							<Export-Package>one.microstream*;-split-package:=merge-first</Export-Package>
+							<Export-Package>org.eclipse.serializer*;-split-package:=merge-first</Export-Package>
 							<Import-Package>*</Import-Package>
 							<DynamicImport-Package>*</DynamicImport-Package>
 						</instructions>
@@ -243,7 +224,7 @@
 				<plugin>
 					<groupId>org.moditect</groupId>
 					<artifactId>moditect-maven-plugin</artifactId>
-					<version>1.0.0.RC1</version>
+					<version>1.0.0.RC2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -387,7 +368,6 @@
 							<windowtitle>MicroStream API ${api.version}</windowtitle>
 							<stylesheetfile>${maven.multiModuleProjectDirectory}/etc/styles/javadoc-stylesheet.css</stylesheetfile>
 							<javadocExecutable>${javadoc.executable}</javadocExecutable>
-							<excludePackageNames>one.microstream.examples.*,echoexample</excludePackageNames>
 							<archive>
 								<manifestEntries>
 									<built-by>${project.organization.name}</built-by>

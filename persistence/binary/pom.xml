@@ -5,22 +5,22 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>one.microstream</groupId>
-		<artifactId>microstream-persistence-parent</artifactId>
-		<version>07.01.00-eclipse</version>
+		<groupId>org.eclipse.serializer</groupId>
+		<artifactId>serializer-persistence-parent</artifactId>
+		<version>0.9.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>microstream-persistence-binary</artifactId>
+	<artifactId>serializer-persistence-binary</artifactId>
 	
-	<name>MicroStream Persistence Binary</name>
-	<description>MicroStream Persistence Binary Data Extension</description>
+	<name>Eclipse Serializer Persistence Binary</name>
+	<description>Eclipse Serializer Persistence Binary Data Extension</description>
 	
 	<dependencies>
 		<dependency>
-			<groupId>one.microstream</groupId>
-			<artifactId>microstream-persistence</artifactId>
-			<version>07.01.00-eclipse</version>
+			<groupId>org.eclipse.serializer</groupId>
+			<artifactId>serializer-persistence</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	

@@ -1,8 +1,8 @@
 /*-
  * #%L
- * microstream-base
+ * Eclipse Serializer Base
  * %%
- * Copyright (C) 2019 - 2022 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,39 +17,38 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.base
+module org.eclipse.serializer.base
 {
-	exports one.microstream.memory.android;
-	exports one.microstream.hashing;
-	exports one.microstream.util.xcsv;
-	exports one.microstream.reference;
-	exports one.microstream.reflect;
-	exports one.microstream;
-	exports one.microstream.typing;
-	exports one.microstream.concurrency;
-	exports one.microstream.functional;
-	exports one.microstream.chars;
-	exports one.microstream.collections;
-	exports one.microstream.branching;
-	exports one.microstream.equality;
-	exports one.microstream.entity;
-	exports one.microstream.util.similarity;
-	exports one.microstream.util.logging;
-	exports one.microstream.util.iterables;
-	exports one.microstream.collections.types;
-	exports one.microstream.memory;
-	exports one.microstream.io;
-	exports one.microstream.util;
-	exports one.microstream.collections.interfaces;
-	exports one.microstream.collections.sorting;
-	exports one.microstream.memory.sun;
-	exports one.microstream.collections.old;
-	exports one.microstream.meta;
-	exports one.microstream.exceptions;
-	exports one.microstream.math;
-	exports one.microstream.util.cql;
-	exports one.microstream.time;
-	
+	exports org.eclipse.serializer.memory.android;
+	exports org.eclipse.serializer.hashing;
+	exports org.eclipse.serializer.util.xcsv;
+	exports org.eclipse.serializer.reference;
+	exports org.eclipse.serializer.reflect;
+	exports org.eclipse.serializer.typing;
+	exports org.eclipse.serializer.concurrency;
+	exports org.eclipse.serializer.functional;
+	exports org.eclipse.serializer.chars;
+	exports org.eclipse.serializer.collections;
+	exports org.eclipse.serializer.branching;
+	exports org.eclipse.serializer.equality;
+	exports org.eclipse.serializer.entity;
+	exports org.eclipse.serializer.util.similarity;
+	exports org.eclipse.serializer.util.logging;
+	exports org.eclipse.serializer.util.iterables;
+	exports org.eclipse.serializer.collections.types;
+	exports org.eclipse.serializer.memory;
+	exports org.eclipse.serializer.io;
+	exports org.eclipse.serializer.util;
+	exports org.eclipse.serializer.collections.interfaces;
+	exports org.eclipse.serializer.collections.sorting;
+	exports org.eclipse.serializer.memory.sun;
+	exports org.eclipse.serializer.collections.old;
+	exports org.eclipse.serializer.meta;
+	exports org.eclipse.serializer.exceptions;
+	exports org.eclipse.serializer.math;
+	exports org.eclipse.serializer.util.cql;
+	exports org.eclipse.serializer.time;
+
 	requires java.compiler;
 	requires java.desktop;
 	requires java.management;

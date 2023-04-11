@@ -1,12 +1,12 @@
 # Prepare code drop for Eclipse Serializer
 
-Within this repo, the code donation of the MicroStream Serializer is prepared.
+Within this repo, the code donation of the Eclipse Serializer is prepared.
 
 Based on v7.1 : https://github.com/microstream-one/microstream/releases/tag/07.01.00-MS-GA
 
 Scope of Proposal
 
-With the Eclipse <fancyname> Serializer project, you can (de-)serialise any Java object without the need for an annotation, superclass or interface or a data schema that generates code.
+With the Eclipse Serializer project, you can (de-)serialise any Java object without the need for an annotation, superclass or interface or a data schema that generates code.
 Besides the serialisation functionality, you can customise many aspects, has support for circular references and data model evolution (refactoring) as you can define mappings for the binary data to your current class model.
 
 

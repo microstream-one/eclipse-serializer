@@ -1,8 +1,8 @@
 /*-
  * #%L
- * microstream-persistence-binary-android
+ * Eclipse Serializer Persistence Android
  * %%
- * Copyright (C) 2019 - 2022 MicroStream Software
+ * Copyright (C) 2023 Eclipse Foundation
  * %%
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -17,12 +17,12 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  * #L%
  */
-module microstream.persistence.binary.android
+module org.eclipse.serializer.persistence.binary.android
 {
-	exports one.microstream.persistence.binary.android.types;
-	exports one.microstream.persistence.binary.android.java.time;
+	exports org.eclipse.serializer.persistence.binary.android.types;
+	exports org.eclipse.serializer.persistence.binary.android.java.time;
 	
-	requires microstream.base;
-	requires microstream.persistence;
-	requires microstream.persistence.binary;
+	requires org.eclipse.serializer.base;
+	requires org.eclipse.serializer.persistence;
+	requires org.eclipse.serializer.persistence.binary;
 }
